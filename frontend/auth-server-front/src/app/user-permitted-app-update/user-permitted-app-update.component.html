@@ -1,0 +1,16 @@
+<h5>Permitted Applications</h5>
+
+<cdk-virtual-scroll-viewport [itemSize]="20" [maxBufferPx]="400" class="w-100" style="height: 400px;">
+    <ul>
+        <li *cdkVirtualFor="let kv of apps| keyvalue">
+            <mat-checkbox [checked]="kv.value.isSelected" (change)="kv.value.isSelected = !kv.value.isSelected">
+                {{kv.value.app.id}} - {{kv.value.app.name}}
+            </mat-checkbox>
+        </li>
+    </ul>
+</cdk-virtual-scroll-viewport>
+
+<div class="d-flex justify-content-end">
+    <button mat-raised-button class="m-2" (click)="updateUserApp()">Update</button>
+    <button mat-raised-button class="m-2" mat-dialog-close>Close</button>
+</div>

@@ -1,0 +1,28 @@
+<div class="mt-3 mb-4" *ngIf="userInfo">
+
+    <button mat-button [matMenuTriggerFor]="menu">menu</button>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/home-page" routerLinkActive="active">Home
+            Page</button>
+        <ng-container *ngIf="isAdmin">
+            <button mat-menu-item routerLink="/manage-user" routerLinkActive="active">Manager Users</button>
+            <button mat-menu-item routerLink="/access-log" routerLinkActive="active">Access History</button>
+            <button mat-menu-item routerLink="/operate-history" routerLinkActive="active">Operate History</button>
+            <button mat-menu-item routerLink="/manage-task" routerLinkActive="active">Manage Tasks</button>
+            <button mat-menu-item routerLink="/task-history" routerLinkActive="active">Task History</button>
+            <button mat-menu-item routerLink="/event" routerLinkActive="active">Event Handling</button>
+            <button mat-menu-item routerLink="/user-app" routerLinkActive="active">Applications</button>
+        </ng-container>
+        <ng-container>
+            <button mat-menu-item routerLink="/change-password" routerLinkActive="active">Change Password</button>
+        </ng-container>
+    </mat-menu>
+
+    <button mat-button [matMenuTriggerFor]="userMenu">{{userInfo.username}}</button>
+    <mat-menu #userMenu="matMenu" class="m-2">
+        <button mat-menu-item>ID: {{userInfo.id}}</button>
+        <button mat-menu-item>Role: {{userInfo.role}}</button>
+    </mat-menu>
+
+    <button mat-button (click)="logout()">logout</button>
+</div>
