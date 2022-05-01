@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Paging } from "src/models/paging";
 import { Resp } from "src/models/resp";
-import { buildApiPath, httpClientOptions } from "./util/api-util";
+import { buildApiPath, buildOptions } from "./util/api-util";
 
 export interface ListAllAppReqVo {
   pagingVo: Paging;
@@ -70,7 +70,7 @@ export class AppService {
     return this.http.post<Resp<ListAllAppRespVo>>(
       buildApiPath("/app/list/all"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -83,7 +83,7 @@ export class AppService {
     return this.http.post<Resp<AppBriefVo[]>>(
       buildApiPath("/app/list/user"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -94,7 +94,7 @@ export class AppService {
     return this.http.post<Resp<void>>(
       buildApiPath("/app/user/update"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -104,7 +104,7 @@ export class AppService {
   public listAllAppsBrief() {
     return this.http.get<Resp<AppBriefVo[]>>(
       buildApiPath("/app/list/brief/all"),
-      httpClientOptions
+      buildOptions()
     );
   }
 }

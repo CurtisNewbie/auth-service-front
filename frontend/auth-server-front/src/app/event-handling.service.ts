@@ -7,7 +7,7 @@ import {
   HandleEventReqVo,
 } from "src/models/event";
 import { Resp } from "src/models/resp";
-import { buildApiPath, httpClientOptions } from "./util/api-util";
+import { buildApiPath, buildOptions } from "./util/api-util";
 
 @Injectable({
   providedIn: "root",
@@ -24,7 +24,7 @@ export class EventHandlingService {
     return this.http.post<Resp<FindEventHandlingByPageRespVo>>(
       buildApiPath("/event/list"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -35,7 +35,7 @@ export class EventHandlingService {
     return this.http.post<Resp<void>>(
       buildApiPath("/event/handle"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 }

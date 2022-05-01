@@ -1,15 +1,28 @@
 import { HttpHeaders } from "@angular/common/http";
 
-const BASE_API = "/api";
+// for development
+const isThroughGateway = true;
+
+const BASE_API = isThroughGateway ? "auth-service/open/api" : "/open/api";
 
 export function buildApiPath(subPath: string): string {
   subPath = subPath.startsWith("/", 0) ? subPath : "/" + subPath;
   return BASE_API + subPath;
 }
 
-export const httpClientOptions = {
-  headers: new HttpHeaders({
-    "Content-Type": "application/json",
-  }),
-  withCredentials: true,
-};
+export function buildOptions() {
+  return {
+    headers: new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    }),
+    withCredentials: true,
+  };
+}
+
+export function setToken(token: string) {
+  if (token === null) localStorage.removeItem("token");
+  else {
+    localStorage.setItem("token", token);
+  }
+}

@@ -10,13 +10,12 @@ import {
 } from "src/models/user-info";
 import { NavigationService, NavType } from "./navigation.service";
 import { NotificationService } from "./notification.service";
-import { buildApiPath, httpClientOptions } from "./util/api-util";
+import { buildApiPath, buildOptions, setToken } from "./util/api-util";
 
 @Injectable({
   providedIn: "root",
 })
 export class UserService {
-  private userInfo: UserInfo = null;
   private roleSubject = new Subject<string>();
   private isLoggedInSubject = new Subject<boolean>();
   private userInfoSubject = new Subject<UserInfo>();
@@ -39,30 +38,23 @@ export class UserService {
    * @param password
    */
   public login(username: string, password: string): Observable<Resp<any>> {
-    let formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-
-    return this.http.post<Resp<any>>(buildApiPath("/login"), formData, {
-      withCredentials: true,
-    });
+    return this.http.post<Resp<any>>(
+      buildApiPath("/user/login"),
+      {
+        username: username,
+        password: password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   /**
    * Logout current user
    */
-  public logout(): Observable<any> {
-    this.setLogout();
-    return this.http.get<void>(buildApiPath("/logout"), {
-      withCredentials: true,
-    });
-  }
-
-  /**
-   * Set user being logged out
-   */
-  public setLogout(): void {
-    this.userInfo = null;
+  public logout(): void {
+    setToken(null);
     this.notifyLoginStatus(false);
     this.nav.navigateTo(NavType.LOGIN_PAGE);
   }
@@ -81,7 +73,7 @@ export class UserService {
     return this.http.post<Resp<any>>(
       buildApiPath("/user/register"),
       { username, password, userRole },
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -95,7 +87,7 @@ export class UserService {
     return this.http.post<Resp<any>>(
       buildApiPath("/user/register/request"),
       { username, password },
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -104,18 +96,16 @@ export class UserService {
    */
   public fetchUserInfo(): void {
     this.http
-      .get<Resp<UserInfo>>(buildApiPath("/user/info"), {
-        withCredentials: true,
-      })
+      .get<Resp<UserInfo>>(buildApiPath("/user/info"), buildOptions())
       .subscribe({
         next: (resp) => {
           if (resp.data != null) {
-            this.userInfo = resp.data;
-            this.notifyRole(this.userInfo.role);
+            this.notifyRole(resp.data.role);
             this.notifyLoginStatus(true);
             this.notifyUserInfo(resp.data);
           } else {
             this.notifi.toast("Please login first");
+            setToken(null);
             this.nav.navigateTo(NavType.LOGIN_PAGE);
             this.notifyLoginStatus(false);
           }
@@ -138,20 +128,6 @@ export class UserService {
   }
 
   /**
-   * Get user info that is previously fetched
-   */
-  public getUserInfo(): UserInfo {
-    return this.userInfo;
-  }
-
-  /**
-   * Check if the service has the user info already
-   */
-  public hasUserInfo(): boolean {
-    return this.userInfo != null;
-  }
-
-  /**
    * Fetch list of user infos (only admin is allowed)
    */
   public fetchUserList(
@@ -160,7 +136,7 @@ export class UserService {
     return this.http.post<Resp<FetchUserInfoResp>>(
       buildApiPath("/user/list"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -171,7 +147,7 @@ export class UserService {
     return this.http.post<Resp<void>>(
       buildApiPath("/user/info/update"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -182,7 +158,7 @@ export class UserService {
     return this.http.post<Resp<void>>(
       buildApiPath("/user/delete"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -190,19 +166,6 @@ export class UserService {
    * Navigate to the specified page if the user is logged in
    */
   public navigateToPageIfIsLoggedIn(page: NavType): void {
-    if (this.hasUserInfo()) {
-      console.log("User has logged in, navigate to page:", page);
-      this.nav.navigateTo(page);
-    } else {
-      this.isLoggedInObservable.subscribe({
-        next: (isLoggedIn) => {
-          if (isLoggedIn) {
-            console.log("User has logged in, navigate to page:", page);
-            this.nav.navigateTo(page);
-          }
-        },
-      });
-      this.fetchUserInfo();
-    }
+    this.fetchUserInfo();
   }
 }

@@ -14,7 +14,7 @@ import {
   FetchAccessLogList,
   FetchAccessLogListParam,
 } from "src/models/access-log";
-import { buildApiPath, httpClientOptions } from "./util/api-util";
+import { buildApiPath, buildOptions } from "./util/api-util";
 import { Paging } from "src/models/paging";
 import { FetchOperateLogListResp } from "src/models/operate-log";
 
@@ -33,7 +33,7 @@ export class HttpClientService {
     return this.http.post<Resp<FetchAccessLogList>>(
       buildApiPath("/access/history"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -44,7 +44,7 @@ export class HttpClientService {
     return this.http.post<Resp<any>>(
       buildApiPath("/user/password/update"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -55,7 +55,7 @@ export class HttpClientService {
     return this.http.post<Resp<FetchOperateLogListResp>>(
       buildApiPath("/operate/history"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 }

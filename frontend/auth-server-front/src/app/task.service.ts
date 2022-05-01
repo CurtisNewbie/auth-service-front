@@ -11,7 +11,7 @@ import {
   TriggerTaskReqVo,
   UpdateTaskReqVo,
 } from "src/models/task";
-import { buildApiPath, httpClientOptions } from "./util/api-util";
+import { buildApiPath, buildOptions } from "./util/api-util";
 
 @Injectable({
   providedIn: "root",
@@ -29,7 +29,7 @@ export class TaskService {
     return this.http.post<Resp<ListTaskByPageRespVo>>(
       buildApiPath("/task/list"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -42,7 +42,7 @@ export class TaskService {
     return this.http.post<Resp<void>>(
       buildApiPath("/task/update"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -53,7 +53,7 @@ export class TaskService {
     return this.http.post<Resp<void>>(
       buildApiPath("/task/trigger"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 
@@ -67,7 +67,7 @@ export class TaskService {
     return this.http.post<Resp<ListTaskHistoryRespVo>>(
       buildApiPath("/task/history"),
       param,
-      httpClientOptions
+      buildOptions()
     );
   }
 }
