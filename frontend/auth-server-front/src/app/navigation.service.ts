@@ -17,6 +17,7 @@ export class NavigationService {
 
 /** Navigation Type (Where we are navigating to) */
 export enum NavType {
+  USER_DETAILS = "user-details",
   LOGIN_PAGE = "login-page",
   MANAGE_USER = "manage-user",
   ACCESS_LOG = "access-log",

@@ -2,6 +2,7 @@
 
     <button mat-button [matMenuTriggerFor]="menu">menu</button>
     <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="/user-details" routerLinkActive="active">User Details</button>
         <ng-container *ngIf="isAdmin">
             <button mat-menu-item routerLink="/manage-user" routerLinkActive="active">Manager Users</button>
             <button mat-menu-item routerLink="/access-log" routerLinkActive="active">Access History</button>

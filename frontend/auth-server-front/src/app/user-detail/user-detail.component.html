@@ -1,0 +1,26 @@
+<div>
+    <h3 class="mt-2 mb-3">User Details</h3>
+</div>
+
+<div class="mt-3 mb-5">
+
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title class="m-2">{{userDetail.username}}</mat-card-title>
+            <mat-card-subtitle class="m-2">ID: {{userDetail.id}}</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content class="m-2">
+            Role: {{userDetail.role}}
+        </mat-card-content>
+
+        <mat-card-content class="m-2">
+            Registration Date: {{userDetail.registerDate}}
+        </mat-card-content>
+
+        <mat-card-actions class="m-2">
+            <button mat-button (click)="navToChangePassword()">Change Password</button>
+        </mat-card-actions>
+    </mat-card>
+
+</div>

@@ -10,11 +10,16 @@ import { OperateHistoryComponent } from "./operate-history/operate-history.compo
 import { RegisterComponent } from "./register/register.component";
 import { TaskHistoryComponent } from "./task-history/task-history.component";
 import { UserAppComponent } from "./user-app/user-app.component";
+import { UserDetailComponent } from "./user-detail/user-detail.component";
 
 const routes: Routes = [
   {
     path: "login-page",
     component: LoginComponent,
+  },
+  {
+    path: "user-details",
+    component: UserDetailComponent,
   },
   {
     path: "manage-user",

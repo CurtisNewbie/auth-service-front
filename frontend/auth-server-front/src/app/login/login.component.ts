@@ -20,8 +20,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // check if user has logged in
-    this.userService.navigateToPageIfIsLoggedIn(NavType.MANAGE_USER);
+    this.userService.fetchUserInfo();
   }
 
   /**
@@ -35,8 +34,8 @@ export class LoginComponent implements OnInit {
     this.userService.login(this.usernameInput, this.passwordInput).subscribe({
       next: (resp) => {
         setToken(resp.data);
+        this.nav.navigateTo(NavType.USER_DETAILS);
         this.userService.fetchUserInfo();
-        this.nav.navigateTo(NavType.MANAGE_USER);
       },
       complete: () => {
         this.passwordInput = "";

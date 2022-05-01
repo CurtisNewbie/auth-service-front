@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { PagingConst, PagingController } from "src/models/paging";
+import { PagingController } from "src/models/paging";
 import {
   emptyListTaskByPageReqVo,
   ListTaskByPageReqVo,

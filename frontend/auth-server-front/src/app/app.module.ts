@@ -18,6 +18,7 @@ import { RespInterceptor } from "./interceptors/resp-interceptor";
 import { ErrorInterceptor } from "./interceptors/error-interceptor";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTableModule } from "@angular/material/table";
@@ -39,7 +40,8 @@ import { UserAppComponent } from "./user-app/user-app.component";
 import { UserPermittedAppUpdateComponent } from "./user-permitted-app-update/user-permitted-app-update.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { MatMenuModule } from "@angular/material";
+import { MatChipRemove, MatMenuModule } from "@angular/material";
+import { UserDetailComponent } from "./user-detail/user-detail.component";
 
 @NgModule({
   exports: [],
@@ -58,8 +60,10 @@ import { MatMenuModule } from "@angular/material";
     TaskHistoryComponent,
     UserAppComponent,
     UserPermittedAppUpdateComponent,
+    UserDetailComponent,
   ],
   imports: [
+    MatCardModule,
     MatMenuModule,
     BrowserModule,
     BrowserAnimationsModule,

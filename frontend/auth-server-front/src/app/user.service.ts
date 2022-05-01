@@ -33,7 +33,7 @@ export class UserService {
   ) {}
 
   /**
-   * Attempt to signin
+   * Attempt to sign-in
    * @param username
    * @param password
    */
@@ -163,9 +163,19 @@ export class UserService {
   }
 
   /**
-   * Navigate to the specified page if the user is logged in
+   * Fetch user details
    */
-  public navigateToPageIfIsLoggedIn(page: NavType): void {
-    this.fetchUserInfo();
+  public fetchUserDetails(): Observable<
+    Resp<{
+      id;
+      username;
+      role;
+      registerDate;
+    }>
+  > {
+    return this.http.get<Resp<any>>(
+      buildApiPath("/user/detail"),
+      buildOptions()
+    );
   }
 }
