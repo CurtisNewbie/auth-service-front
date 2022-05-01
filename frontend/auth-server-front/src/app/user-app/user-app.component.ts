@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material";
 import { PagingController } from "src/models/paging";
 import { AppService, AppVo } from "../app.service";
+import { UserService } from "../user.service";
 
 @Component({
   selector: "app-user-app",
@@ -20,9 +21,13 @@ export class UserAppComponent implements OnInit {
   apps: AppVo[] = [];
   pagingController: PagingController = new PagingController();
 
-  constructor(private appService: AppService) {}
+  constructor(
+    private appService: AppService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
+    this.userService.fetchUserInfo();
     this.fetchList();
   }
 

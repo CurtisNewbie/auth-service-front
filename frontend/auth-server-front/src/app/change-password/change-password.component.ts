@@ -25,7 +25,9 @@ export class ChangePasswordComponent implements OnInit {
     private notifi: NotificationService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.userService.fetchUserInfo();
+  }
 
   changePassword() {
     if (
@@ -50,7 +52,7 @@ export class ChangePasswordComponent implements OnInit {
       return;
     }
 
-    this.httpService.changePassword(this.changePasswordParam).subscribe({
+    this.userService.changePassword(this.changePasswordParam).subscribe({
       next: (result) => {
         this.notifi.toast("Password changed");
         this.nav.navigateTo(NavType.MANAGE_USER);

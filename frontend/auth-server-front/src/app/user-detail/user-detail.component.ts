@@ -20,6 +20,7 @@ export class UserDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.userService.fetchUserInfo();
     this.userService.fetchUserDetails().subscribe({
       next: (resp) => {
         this.userDetail = resp.data;

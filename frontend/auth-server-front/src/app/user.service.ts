@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, Subject } from "rxjs";
-import { Resp } from "src/models/resp";
 import {
+  ChangePasswordParam,
   FetchUserInfoParam,
   FetchUserInfoResp as FetchUserInfoResp,
   UpdateUserInfoParam,
@@ -11,6 +11,7 @@ import {
 import { NavigationService, NavType } from "./navigation.service";
 import { NotificationService } from "./notification.service";
 import { buildApiPath, buildOptions, setToken } from "./util/api-util";
+import { Resp } from "src/models/resp";
 
 @Injectable({
   providedIn: "root",
@@ -175,6 +176,17 @@ export class UserService {
   > {
     return this.http.get<Resp<any>>(
       buildApiPath("/user/detail"),
+      buildOptions()
+    );
+  }
+
+  /**
+   * Change password
+   */
+  public changePassword(param: ChangePasswordParam): Observable<Resp<any>> {
+    return this.http.post<Resp<any>>(
+      buildApiPath("/user/password/update"),
+      param,
       buildOptions()
     );
   }

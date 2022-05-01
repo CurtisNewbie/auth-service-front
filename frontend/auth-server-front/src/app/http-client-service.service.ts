@@ -36,18 +36,6 @@ export class HttpClientService {
       buildOptions()
     );
   }
-
-  /**
-   * Change password
-   */
-  public changePassword(param: ChangePasswordParam): Observable<Resp<any>> {
-    return this.http.post<Resp<any>>(
-      buildApiPath("/user/password/update"),
-      param,
-      buildOptions()
-    );
-  }
-
   /** Fetch operate_log list */
   public fetchOperateLogList(
     param: Paging

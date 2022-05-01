@@ -16,6 +16,7 @@ import { PageEvent } from "@angular/material/paginator";
 import { NotificationService } from "../notification.service";
 import { TaskService } from "../task.service";
 import { NavigationService, NavType } from "../navigation.service";
+import { UserService } from "../user.service";
 
 @Component({
   selector: "app-manage-tasks",
@@ -53,12 +54,14 @@ export class ManageTasksComponent implements OnInit {
   expandedElement: Task;
 
   constructor(
+    private userService: UserService,
     private taskService: TaskService,
     private notifi: NotificationService,
     private navi: NavigationService
   ) {}
 
   ngOnInit() {
+    this.userService.fetchUserInfo();
     this.fetchTaskList();
   }
 

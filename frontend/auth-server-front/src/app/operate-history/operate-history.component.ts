@@ -3,6 +3,7 @@ import { PageEvent } from "@angular/material/paginator";
 import { OperateLog } from "src/models/operate-log";
 import { PagingController } from "src/models/paging";
 import { HttpClientService } from "../http-client-service.service";
+import { UserService } from "../user.service";
 
 @Component({
   selector: "app-operate-history",
@@ -21,9 +22,13 @@ export class OperateHistoryComponent implements OnInit {
     "operateParam",
   ];
 
-  constructor(private http: HttpClientService) {}
+  constructor(
+    private http: HttpClientService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
+    this.userService.fetchUserInfo();
     this.fetchOperateLogList();
   }
 
