@@ -89,7 +89,7 @@ export class UserService {
     userRole: string
   ): Observable<Resp<any>> {
     return this.http.post<Resp<any>>(
-      buildApiPath("/user/register"),
+      buildApiPath("/user/add"),
       { username, password, userRole },
       buildOptions()
     );
