@@ -95,7 +95,7 @@ export class UserService {
   /**
    * Fetch user info
    */
-  public fetchUserInfo(): void {
+  public fetchUserInfo(callback = null): void {
     this.http
       .get<Resp<UserInfo>>(buildApiPath("/user/info"), buildOptions())
       .subscribe({
@@ -104,6 +104,7 @@ export class UserService {
             this.notifyRole(resp.data.role);
             this.notifyLoginStatus(true);
             this.notifyUserInfo(resp.data);
+            if (callback != null) callback();
           } else {
             this.notifi.toast("Please login first");
             setToken(null);
