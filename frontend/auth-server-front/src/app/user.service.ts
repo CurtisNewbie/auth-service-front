@@ -31,7 +31,7 @@ export class UserService {
     if (t != null) {
       this.exchangeToken(t).subscribe({
         next: (resp) => {
-          console.log("token refreshed", resp.data);
+          console.log("token refreshed");
           setToken(resp.data);
         },
       });
