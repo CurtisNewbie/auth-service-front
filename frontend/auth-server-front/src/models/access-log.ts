@@ -2,6 +2,8 @@ import { Paging } from "./paging";
 
 /** Access log response vo*/
 export interface AccessLog {
+  id: number;
+
   /** when the user signed in */
   accessTime: string;
 
@@ -13,11 +15,14 @@ export interface AccessLog {
 
   /** primary key of user */
   userId: number;
+
+  /** url */
+  url: string;
 }
 
 export interface FetchAccessLogList {
   /** list of access log */
-  accessLogInfoList: AccessLog[];
+  payload: AccessLog[];
 
   /** paging */
   pagingVo: Paging;

@@ -9,7 +9,12 @@
     <table mat-table [dataSource]="accessLogList" class="mat-elevation-z8 mb-4" style="width: 100%;">
 
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef> ID </th>
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let a"> {{a.id}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="userId">
+            <th mat-header-cell *matHeaderCellDef> User Id </th>
             <td mat-cell *matCellDef="let a"> {{a.userId}} </td>
         </ng-container>
 
@@ -26,6 +31,11 @@
         <ng-container matColumnDef="ipAddress">
             <th mat-header-cell *matHeaderCellDef> IP Address </th>
             <td mat-cell *matCellDef="let a"> {{a.ipAddress}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="url">
+            <th mat-header-cell *matHeaderCellDef> URL </th>
+            <td mat-cell *matCellDef="let a"> {{a.url}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="COLUMNS_TO_BE_DISPLAYED"></tr>

@@ -12,9 +12,11 @@ import { HttpClientService } from "../http-client-service.service";
 export class AccessLogComponent implements OnInit {
   readonly COLUMNS_TO_BE_DISPLAYED: string[] = [
     "id",
+    "userId",
     "user",
     "accessTime",
     "ipAddress",
+    "url",
   ];
   accessLogList: AccessLog[] = [];
   pagingController: PagingController = new PagingController();
@@ -35,7 +37,7 @@ export class AccessLogComponent implements OnInit {
       })
       .subscribe({
         next: (resp) => {
-          this.accessLogList = resp.data.accessLogInfoList;
+          this.accessLogList = resp.data.payload;
           let total = resp.data.pagingVo.total;
           if (total != null) {
             this.pagingController.updatePages(total);
