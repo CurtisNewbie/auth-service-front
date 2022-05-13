@@ -31,6 +31,7 @@ export class ManagerUserComponent implements OnInit {
     "name",
     "role",
     "status",
+    "reviewStatus",
     "createBy",
     "createTime",
     "updateBy",
@@ -191,5 +192,27 @@ export class ManagerUserComponent implements OnInit {
   copy(obj: UserInfo): UserInfo {
     if (obj == null) return null;
     return { ...obj };
+  }
+
+  reviewRegistration(userId: number, reviewStatus: string) {
+    this.userService
+      .reviewUserRegistration({
+        userId: userId,
+        reviewStatus: reviewStatus,
+      })
+      .subscribe({
+        complete: () => {
+          this.fetchUserInfoList();
+          this.expandedElement = null;
+        },
+      });
+  }
+
+  approveRegistration(userId: number) {
+    this.reviewRegistration(userId, "APPROVED");
+  }
+
+  rejectRegistration(userId: number) {
+    this.reviewRegistration(userId, "REJECTED");
   }
 }

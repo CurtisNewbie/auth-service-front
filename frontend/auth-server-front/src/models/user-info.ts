@@ -4,12 +4,18 @@ import { Option } from "./select-util";
 export interface UserInfo {
   /** id */
   id: number;
+
   /** username */
   username: string;
+
   /** role */
   role: string;
+
   /** whether the user is disabled, 0-normal, 1-disabled */
   isDisabled: number;
+
+  /** review status */
+  reviewStatus: string;
 
   /** when the user is created */
   createTime: string;

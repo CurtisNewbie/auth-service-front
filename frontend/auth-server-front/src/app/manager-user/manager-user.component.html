@@ -107,6 +107,15 @@
             </td>
         </ng-container>
 
+        <ng-container matColumnDef="reviewStatus">
+            <th mat-header-cell *matHeaderCellDef> Review Status </th>
+            <td mat-cell *matCellDef="let u">
+                <span *ngIf="u.reviewStatus === 'REJECTED'">rejected</span>
+                <span *ngIf="u.reviewStatus === 'APPROVED'">approved</span>
+                <span *ngIf="u.reviewStatus === 'PENDING'" class="status-red">pending</span>
+            </td>
+        </ng-container>
+
         <ng-container matColumnDef="createBy">
             <th mat-header-cell *matHeaderCellDef> Create By </th>
             <td mat-cell *matCellDef="let u"> {{u.createBy}} </td>
@@ -154,6 +163,7 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+
                             <div class="col-12">
                                 <button mat-raised-button class="m-2" (click)="updateUserInfo()">Update</button>
                                 <button mat-raised-button class="m-2"
@@ -161,6 +171,15 @@
                                     (click)="deleteUser()">Delete</button>
                                 <button mat-raised-button class="m-2" (click)="openDialogForUserApp()">Permitted
                                     Apps</button>
+                            </div>
+
+                            <div *ngIf="expandedElement.reviewStatus == 'PENDING'" class="col-12">
+                                <button mat-raised-button class="m-2"
+                                    (click)="approveRegistration(expandedElement.id)">Approve
+                                    Registration</button>
+                                <button mat-raised-button class="m-2"
+                                    (click)="rejectRegistration(expandedElement.id)">Reject
+                                    Registration</button>
                             </div>
                         </div>
                     </ng-container>

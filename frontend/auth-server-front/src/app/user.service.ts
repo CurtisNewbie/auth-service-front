@@ -222,4 +222,12 @@ export class UserService {
       buildOptions()
     );
   }
+
+  public reviewUserRegistration(param): Observable<Resp<void>> {
+    return this.http.post<Resp<void>>(
+      buildApiPath("/user/registration/review"),
+      param,
+      buildOptions()
+    );
+  }
 }
