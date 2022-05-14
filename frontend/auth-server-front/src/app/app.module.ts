@@ -34,13 +34,12 @@ import { ConfirmDialogComponent } from "./dialog/confirm/confirm-dialog.componen
 import { OperateHistoryComponent } from "./operate-history/operate-history.component";
 import { ManageTasksComponent } from "./manage-tasks/manage-tasks.component";
 import { RegisterComponent } from "./register/register.component";
-import { EventComponent } from "./event/event.component";
 import { TaskHistoryComponent } from "./task-history/task-history.component";
 import { UserAppComponent } from "./user-app/user-app.component";
 import { UserPermittedAppUpdateComponent } from "./user-permitted-app-update/user-permitted-app-update.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { MatChipRemove, MatMenuModule } from "@angular/material";
+import { MatMenuModule } from "@angular/material";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 
 @NgModule({
@@ -56,7 +55,6 @@ import { UserDetailComponent } from "./user-detail/user-detail.component";
     OperateHistoryComponent,
     ManageTasksComponent,
     RegisterComponent,
-    EventComponent,
     TaskHistoryComponent,
     UserAppComponent,
     UserPermittedAppUpdateComponent,
