@@ -64,6 +64,7 @@ export class UserService {
       {
         username: username,
         password: password,
+        appName: "auth-service",
       },
       {
         withCredentials: true,
