@@ -48,6 +48,7 @@ export class ManagerUserComponent implements OnInit {
   expandedElement: UserInfo = null;
   searchParam: FetchUserInfoParam = emptyFetchUserInfoParam();
   pagingController: PagingController = new PagingController();
+  expandedIsDisabled: boolean = false;
 
   constructor(
     private userService: UserService,
@@ -187,6 +188,8 @@ export class ManagerUserComponent implements OnInit {
       return;
     }
     this.expandedElement = this.copy(row);
+    this.expandedIsDisabled =
+      this.expandedElement.isDisabled === this.USER_IS_DISABLED;
   }
 
   copy(obj: UserInfo): UserInfo {

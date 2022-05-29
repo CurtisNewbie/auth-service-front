@@ -166,8 +166,7 @@
 
                             <div class="col-12">
                                 <button mat-raised-button class="m-2" (click)="updateUserInfo()">Update</button>
-                                <button mat-raised-button class="m-2"
-                                    *ngIf="expandedElement.isDisabled === USER_IS_DISABLED"
+                                <button mat-raised-button class="m-2" *ngIf="expandedIsDisabled"
                                     (click)="deleteUser()">Delete</button>
                                 <button mat-raised-button class="m-2" (click)="openDialogForUserApp()">Permitted
                                     Apps</button>
