@@ -81,7 +81,7 @@ export class UserService {
    */
   public logout(): void {
     setToken(null);
-    this.notifyLoginStatus(false);
+    this._notifyLoginStatus(false);
     this.nav.navigateTo(NavType.LOGIN_PAGE);
   }
 
@@ -125,32 +125,37 @@ export class UserService {
       .get<Resp<UserInfo>>(buildApiPath("/user/info"), buildOptions())
       .subscribe({
         next: (resp) => {
-          if (resp.data != null) {
-            this.notifyRole(resp.data.role);
-            this.notifyLoginStatus(true);
-            this.notifyUserInfo(resp.data);
-            if (callback != null) callback();
+          if (resp.data) {
+            this.onUserInfoFetched(resp.data)
+            if (callback) callback();
           } else {
             this.notifi.toast("Please login first");
             setToken(null);
             this.nav.navigateTo(NavType.LOGIN_PAGE);
-            this.notifyLoginStatus(false);
+            this._notifyLoginStatus(false);
           }
         },
       });
   }
 
-  private notifyUserInfo(userInfo: UserInfo): void {
+  private onUserInfoFetched(userInfo: UserInfo): void {
+    console.log('Fetched UserInfo:', userInfo);
+    this._notifyRole(userInfo.role);
+    this._notifyLoginStatus(true);
+    this._notifyUserInfo(userInfo);
+  }
+
+  private _notifyUserInfo(userInfo: UserInfo): void {
     this.userInfoSubject.next(userInfo);
   }
 
   /** Notify the role of the user via observable */
-  private notifyRole(role: string): void {
+  private _notifyRole(role: string): void {
     this.roleSubject.next(role);
   }
 
   /** Notify the login status of the user via observable */
-  private notifyLoginStatus(isLoggedIn: boolean): void {
+  private _notifyLoginStatus(isLoggedIn: boolean): void {
     this.isLoggedInSubject.next(isLoggedIn);
   }
 

@@ -8,3 +8,11 @@ export interface Resp<T> {
   /** data */
   data: T;
 }
+
+export function mockRespOf(data: any): Resp<any>{
+  return {
+    msg: '',
+    hasError: false,
+    data: data,
+  }
+}

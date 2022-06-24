@@ -41,6 +41,7 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatMenuModule } from "@angular/material";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
+import { MockInterceptor } from "./interceptors/mock-interceptor";
 
 @NgModule({
   exports: [],
@@ -86,6 +87,7 @@ import { UserDetailComponent } from "./user-detail/user-detail.component";
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: APP_BASE_HREF, useValue: "/" },
+    { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RespInterceptor, multi: true },
   ],

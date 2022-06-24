@@ -3,7 +3,22 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  shouldMockResp: true,
+  mockData: {
+    authToken: '123123123123123',
+    userInfo: {
+      id: 1,
+      username: "Test User",
+      role: "admin",
+      isDisabled: 0,
+      reviewStatus: 'APPROVED',
+      createTime: '2022-01-01 12:00',
+      updateTime: '',
+      updateBy: '',
+      createBy: ''
+    }
+  }
 };
 
 /*
