@@ -36,7 +36,10 @@ export class MockInterceptor implements HttpInterceptor {
       // }
 
       if (url.indexOf(buildApiPath("/user/info")) > -1) {
-        console.log(`Intercepted: ${url}`);
+        return of(new HttpResponse({ status: 200, body: mockRespOf(environment.mockData.userInfo) }));
+      }
+
+      if (url.indexOf(buildApiPath("/user/detail")) > -1 ){
         return of(new HttpResponse({ status: 200, body: mockRespOf(environment.mockData.userInfo) }));
       }
 

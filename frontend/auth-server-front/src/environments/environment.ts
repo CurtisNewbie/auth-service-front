@@ -16,7 +16,8 @@ export const environment = {
       createTime: '2022-01-01 12:00',
       updateTime: '',
       updateBy: '',
-      createBy: ''
+      createBy: '',
+      registerDate: "2022-01-01 12:00",
     }
   }
 };
