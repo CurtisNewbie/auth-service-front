@@ -7,7 +7,7 @@ import {
   HttpHandler,
 } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { buildApiPath } from "../util/api-util";
+import { buildApiPath, getToken, setToken } from "../util/api-util";
 import { environment } from "src/environments/environment";
 import { mockRespOf } from '../../models/resp';
 
@@ -28,12 +28,11 @@ export class MockInterceptor implements HttpInterceptor {
 
       const url = httpRequest.url;
 
-      // don't mock login
-      // 
-      // if (url.indexOf(buildApiPath("/user/login")) > -1) {
-      //   console.log(`Intercepted: ${url}`);
-      //   return of(new HttpResponse({ status: 200, body: mockRespOf(environment.mockData.authToken) }));
-      // }
+      if (!getToken()) setToken(environment.mockData.authToken);
+
+      if (url.indexOf(buildApiPath("/user/login")) > -1) {
+        return of(new HttpResponse({ status: 200, body: mockRespOf(environment.mockData.authToken) }));
+      }
 
       if (url.indexOf(buildApiPath("/user/info")) > -1) {
         return of(new HttpResponse({ status: 200, body: mockRespOf(environment.mockData.userInfo) }));

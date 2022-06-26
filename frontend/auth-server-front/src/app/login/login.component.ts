@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
       next: (resp) => {
         setToken(resp.data);
         this.nav.navigateTo(NavType.USER_DETAILS);
-        this.userService.fetchUserInfo();
       },
       complete: () => {
         this.passwordInput = "";
