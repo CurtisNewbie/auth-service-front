@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  mockResp: false
+  mockResp: false,
+  isThroughGateway: true
 };

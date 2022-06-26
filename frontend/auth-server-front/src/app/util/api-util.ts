@@ -1,11 +1,9 @@
 import { HttpHeaders } from "@angular/common/http";
+import { environment } from '../../environments/environment'
 
-// for development
-const isThroughGateway = true;
-
-const BASE_API = isThroughGateway ? "auth-service/open/api" : "/open/api";
+const BASE_API = environment.isThroughGateway ? "auth-service/open/api" : "/open/api";
 const TOKEN = "token";
-let emptyTokenCallback;
+let emptyTokenCallback = null;
 
 export function onEmptyToken(callback) {
   emptyTokenCallback = callback;
@@ -34,9 +32,7 @@ export function buildOptions() {
 
 export function setToken(token: string) {
   if (token === null) localStorage.removeItem(TOKEN);
-  else {
-    localStorage.setItem(TOKEN, token);
-  }
+  else localStorage.setItem(TOKEN, token);
 }
 
 export function getToken() {

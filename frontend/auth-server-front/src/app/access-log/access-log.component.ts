@@ -49,24 +49,6 @@ export class AccessLogComponent implements OnInit {
       });
   }
 
-  /**
-   * Set the specified page and access log list
-   * @param page
-   */
-  gotoPage(page: number): void {
-    this.pagingController.setPage(page);
-    this.fetchAccessLogList();
-  }
-
-  /**
-   * Set current page size and fetch the access log list
-   * @param pageSize
-   */
-  setPageSize(pageSize: number): void {
-    this.pagingController.setPageLimit(pageSize);
-    this.fetchAccessLogList();
-  }
-
   handle(e: PageEvent): void {
     this.pagingController.handle(e);
     this.fetchAccessLogList();

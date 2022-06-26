@@ -1,6 +1,6 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material";
-import { PageEvent } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { animateElementExpanding } from "src/animate/animate-util";
 import { PagingController } from "src/models/paging";
 import {
@@ -50,6 +50,9 @@ export class ManagerUserComponent implements OnInit {
   pagingController: PagingController = new PagingController();
   expandedIsDisabled: boolean = false;
 
+  @ViewChild("paginator", { static: true })
+  paginator: MatPaginator;
+
   constructor(
     private userService: UserService,
     private notifi: NotificationService,
@@ -58,6 +61,7 @@ export class ManagerUserComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUserInfoList();
+    this.pagingController.bind(this.paginator);
   }
 
   /**
@@ -107,6 +111,7 @@ export class ManagerUserComponent implements OnInit {
   resetSearchParam(): void {
     this.searchParam.isDisabled = null;
     this.searchParam.role = null;
+    this.pagingController.firstPage();
   }
 
   handle(e: PageEvent): void {

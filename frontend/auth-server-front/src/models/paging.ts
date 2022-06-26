@@ -1,4 +1,4 @@
-import { PageEvent } from "@angular/material/paginator";
+import { MatPaginator, PageEvent } from "@angular/material/paginator";
 
 /** Pagination info */
 export interface Paging {
@@ -24,6 +24,7 @@ export class PagingConst {
  * Controller for pagination, internal properties are non-private, thus can be directly bound with directive
  */
 export class PagingController {
+
   PAGE_LIMIT_OPTIONS: number[] = PagingConst.getPagingLimitOptions();
   paging: Paging = {
     page: 1,
@@ -31,6 +32,12 @@ export class PagingController {
     total: 0,
   };
   pages: number[] = [1];
+  paginator: MatPaginator;
+
+  public bind(paginator: MatPaginator) {
+    this.paginator = paginator;
+    this.paginator.page.subscribe(e => this.handle(e));
+  }
 
   /** Update the list of pages that it can select */
   public updatePages(total: number): void {
@@ -43,6 +50,11 @@ export class PagingController {
     if (this.pages.length === 0) {
       this.pages.push(1);
     }
+  }
+
+  /** Change paginator to first page */
+  public firstPage(): void {
+    if (this.paginator) this.paginator.firstPage();
   }
 
   /** Set page number */

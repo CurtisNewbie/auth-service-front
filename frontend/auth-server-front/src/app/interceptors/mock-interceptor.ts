@@ -45,6 +45,14 @@ export class MockInterceptor implements HttpInterceptor {
       if (url.indexOf(buildApiPath("/token/exchange")) > -1 ){
         return of(new HttpResponse({ status: 200, body: mockRespOf(environment.mockData.authToken) }));
       }
+      
+      if (url.indexOf(buildApiPath('/user/key/list')) > -1){
+        return of(new HttpResponse({ status: 200, body: mockRespOf(environment.mockData.userKeyList) }));
+      }
+
+      if (url.indexOf(buildApiPath('/user/key/delete')) > -1){
+        return of(new HttpResponse({ status: 200, body: mockRespOf("deleted") }));
+      }
 
     }
     return next.handle(httpRequest)
