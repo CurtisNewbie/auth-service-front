@@ -27,5 +27,5 @@ export enum NavType {
   REGISTER_PAGE = "register",
   TASK_HISTORY = "task-history",
   USER_APP = "user-app",
-  MANAGE_TOKENS = "manage-tokens",
+  MANAGE_KEYS = "manage-keys",
 }

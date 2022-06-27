@@ -4,7 +4,7 @@ import { AccessLogComponent } from "./access-log/access-log.component";
 import { ChangePasswordComponent } from "./change-password/change-password.component";
 import { LoginComponent } from "./login/login.component";
 import { ManageTasksComponent } from "./manage-tasks/manage-tasks.component";
-import { ManageTokensComponent } from "./manage-tokens/manage-tokens.component";
+import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
 import { ManagerUserComponent } from "./manager-user/manager-user.component";
 import { OperateHistoryComponent } from "./operate-history/operate-history.component";
 import { RegisterComponent } from "./register/register.component";
@@ -14,8 +14,8 @@ import { UserDetailComponent } from "./user-detail/user-detail.component";
 
 const routes: Routes = [
   {
-    path: "manage-tokens",
-    component: ManageTokensComponent
+    path: "manage-keys",
+    component: ManageKeysComponent,
   },
   {
     path: "login-page",
@@ -64,4 +64,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

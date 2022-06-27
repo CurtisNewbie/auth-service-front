@@ -42,7 +42,7 @@ import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatMenuModule } from "@angular/material";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { MockInterceptor } from "./interceptors/mock-interceptor";
-import { ManageTokensComponent } from './manage-tokens/manage-tokens.component';
+import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
 
 @NgModule({
   exports: [],
@@ -61,7 +61,7 @@ import { ManageTokensComponent } from './manage-tokens/manage-tokens.component';
     UserAppComponent,
     UserPermittedAppUpdateComponent,
     UserDetailComponent,
-    ManageTokensComponent,
+    ManageKeysComponent,
   ],
   imports: [
     MatCardModule,
