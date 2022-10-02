@@ -39,7 +39,7 @@ import { UserAppComponent } from "./user-app/user-app.component";
 import { UserPermittedAppUpdateComponent } from "./user-permitted-app-update/user-permitted-app-update.component";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ScrollingModule } from "@angular/cdk/scrolling";
-import { MatMenuModule } from "@angular/material";
+import { MatMenuModule } from "@angular/material/menu";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
 import { ControlledPaginatorComponent } from "./controlled-paginator/controlled-paginator.component";

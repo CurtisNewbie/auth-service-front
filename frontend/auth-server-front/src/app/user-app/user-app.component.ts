@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { PageEvent } from "@angular/material";
+import { PageEvent } from "@angular/material/paginator";
 import { PagingController } from "src/models/paging";
 import { AppService, AppVo } from "../app.service";
 import { UserService } from "../user.service";
