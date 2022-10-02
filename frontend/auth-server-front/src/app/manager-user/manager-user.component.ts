@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { animateElementExpanding } from "src/animate/animate-util";
+import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/animate-util";
 import { environment } from "src/environments/environment";
 import { PagingController } from "src/models/paging";
 import {
@@ -16,8 +16,8 @@ import {
 import { ConfirmDialogComponent } from "../dialog/confirm/confirm-dialog.component";
 import { NotificationService } from "../notification.service";
 import { UserPermittedAppUpdateComponent } from "../user-permitted-app-update/user-permitted-app-update.component";
-import { UserService } from "../user.service";
 import { HClient } from "../util/api-util";
+import { isEnterKey } from "../util/condition";
 
 @Component({
   selector: "app-manager-user",
@@ -51,6 +51,10 @@ export class ManagerUserComponent implements OnInit {
   searchParam: FetchUserInfoParam = emptyFetchUserInfoParam();
   pagingController: PagingController;
   expandedIsDisabled: boolean = false;
+
+  idEquals = isIdEqual;
+  getExpandedEle = (row) => getExpanded(row, this.expandedElement);
+  isEnter = isEnterKey;
 
   constructor(
     private notifi: NotificationService,
@@ -95,12 +99,6 @@ export class ManagerUserComponent implements OnInit {
         this.pagingController.onTotalChanged(resp.data.pagingVo);
       },
     });
-  }
-
-  searchNameInputKeyPressed(event: any): void {
-    if (event.key === "Enter") {
-      this.fetchUserInfoList();
-    }
   }
 
   resetSearchParam(): void {
@@ -172,26 +170,6 @@ export class ManagerUserComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe();
-  }
-
-  idEquals(tl: UserInfo, tr: UserInfo): boolean {
-    if (tl == null || tr == null) return false;
-    return tl.id === tr.id;
-  }
-
-  setExpandedElement(row: UserInfo) {
-    if (this.idEquals(row, this.expandedElement)) {
-      this.expandedElement = null;
-      return;
-    }
-    this.expandedElement = this.copy(row);
-    this.expandedIsDisabled =
-      this.expandedElement.isDisabled === this.USER_IS_DISABLED;
-  }
-
-  copy(obj: UserInfo): UserInfo {
-    if (obj == null) return null;
-    return { ...obj };
   }
 
   reviewRegistration(userId: number, reviewStatus: string) {

@@ -14,7 +14,7 @@
         <mat-form-field appearance="fill" style="width: 100%;">
             <mat-label>Password</mat-label>
             <input matInput type="password" id="passwordInput" [(ngModel)]="passwordInput"
-                (keyup)="passwordInputKeyPressed($event)">
+                (keyup)="isEnter($event) && register()">
             <button *ngIf="passwordInput" matSuffix class="btn-close" aria-label="Clear" (click)="passwordInput=''">
             </button>
         </mat-form-field>

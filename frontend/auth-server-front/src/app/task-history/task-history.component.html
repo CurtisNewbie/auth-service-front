@@ -4,21 +4,21 @@
 
 <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Task Name</mat-label>
-    <input matInput type="text" [(ngModel)]="jobName" (keyup)="onEnterKeyPressed($event)">
+    <input matInput type="text" [(ngModel)]="jobName" (keyup)="isEnter($event) && fetchHistoryList()">
     <button *ngIf="jobName" matSuffix aria-label="Clear" (click)="jobName=''" class="btn-close">
     </button>
 </mat-form-field>
 
 <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Task Id</mat-label>
-    <input matInput type="text" [(ngModel)]="taskId" (keyup)="onEnterKeyPressed($event)">
+    <input matInput type="text" [(ngModel)]="taskId" (keyup)="isEnter($event) && fetchHistoryList()">
     <button *ngIf="taskId" matSuffix aria-label="Clear" (click)="taskId=null" class="btn-close">
     </button>
 </mat-form-field>
 
 <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Triggered By</mat-label>
-    <input matInput type="text" [(ngModel)]="runBy" (keyup)="onEnterKeyPressed($event)">
+    <input matInput type="text" [(ngModel)]="runBy" (keyup)="isEnter($event) && fetchHistoryList()">
     <button *ngIf="runBy" matSuffix aria-label="Clear" (click)="runBy=''" class="btn-close">
     </button>
 </mat-form-field>

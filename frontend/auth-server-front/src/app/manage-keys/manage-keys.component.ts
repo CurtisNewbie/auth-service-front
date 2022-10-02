@@ -7,6 +7,7 @@ import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/ani
 import { UserService } from "../user.service";
 import { NotificationService } from "../notification.service";
 import { environment } from "src/environments/environment";
+import { isEnterKey } from "../util/condition";
 
 @Component({
   selector: "app-manage-keys",
@@ -34,6 +35,7 @@ export class ManageKeysComponent implements OnInit {
 
   idEquals = isIdEqual;
   getExpandedEle = (row) => getExpanded(row, this.expandedElement);
+  isEnter = isEnterKey;
 
   constructor(
     private http: HClient,

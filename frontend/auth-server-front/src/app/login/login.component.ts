@@ -3,6 +3,7 @@ import { NavigationService, NavType } from "../navigation.service";
 import { NotificationService } from "../notification.service";
 import { UserService } from "../user.service";
 import { setToken } from "../util/api-util";
+import { isEnterKey } from "../util/condition";
 
 @Component({
   selector: "app-login",
@@ -12,6 +13,7 @@ import { setToken } from "../util/api-util";
 export class LoginComponent implements OnInit {
   usernameInput: string = "";
   passwordInput: string = "";
+  isEnter = isEnterKey;
 
   constructor(
     private userService: UserService,
@@ -42,12 +44,6 @@ export class LoginComponent implements OnInit {
         this.passwordInput = "";
       },
     });
-  }
-
-  passwordInputKeyPressed(event: any): void {
-    if (event.key === "Enter") {
-      this.login();
-    }
   }
 
   goToRegisterPage(): void {

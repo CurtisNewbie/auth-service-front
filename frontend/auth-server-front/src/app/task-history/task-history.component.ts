@@ -1,10 +1,10 @@
-import { DatePipe, formatDate } from "@angular/common";
+import { formatDate } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PagingController } from "src/models/paging";
 import { TaskHistory } from "src/models/task";
-import { NotificationService } from "../notification.service";
 import { TaskService } from "../task.service";
+import { isEnterKey } from "../util/condition";
 
 export interface TaskHistoryData {
   taskId: number;
@@ -36,6 +36,8 @@ export class TaskHistoryComponent implements OnInit {
   datePickerLowerbound: Date;
   datePickerUpperbound: Date;
 
+  isEnter = isEnterKey;
+
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute
@@ -54,7 +56,6 @@ export class TaskHistoryComponent implements OnInit {
     this.route.paramMap.subscribe((params) => {
       let ti = params.get("taskId");
       if (ti != null) this.taskId = Number(ti);
-
     });
   }
 
@@ -91,12 +92,6 @@ export class TaskHistoryComponent implements OnInit {
     this.taskId = null;
     this.startDate = null;
     this.endDate = null;
-  }
-
-  onEnterKeyPressed(event: any): void {
-    if (event.key === "Enter") {
-      this.fetchHistoryList();
-    }
   }
 
   onPagingControllerReady(pc) {

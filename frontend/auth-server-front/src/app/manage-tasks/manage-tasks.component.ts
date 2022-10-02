@@ -15,7 +15,7 @@ import { Option } from "src/models/select-util";
 import { NotificationService } from "../notification.service";
 import { TaskService } from "../task.service";
 import { NavigationService, NavType } from "../navigation.service";
-import { UserService } from "../user.service";
+import { isEnterKey } from "../util/condition";
 
 @Component({
   selector: "app-manage-tasks",
@@ -54,6 +54,7 @@ export class ManageTasksComponent implements OnInit {
 
   idEquals = isIdEqual;
   getExpandedEle = (row) => getExpanded(row, this.expandedElement);
+  isEnter = isEnterKey;
 
   constructor(
     private taskService: TaskService,

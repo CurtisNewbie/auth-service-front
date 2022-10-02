@@ -42,7 +42,7 @@
 <div>
     <mat-form-field appearance="fill" style="width: 100%;" class="mb-1 mt-3">
         <mat-label>Username:</mat-label>
-        <input matInput type="text" [(ngModel)]="searchParam.username" (keyup)="searchNameInputKeyPressed($event)">
+        <input matInput type="text" [(ngModel)]="searchParam.username" (keyup)="isEnter($event) && fetchUserInfoList()">
         <button *ngIf="searchParam.username" matSuffix aria-label="Clear" (click)="searchParam.username=''"
             class="btn-close">
         </button>
@@ -189,7 +189,7 @@
 
         <tr mat-header-row *matHeaderRowDef="COLUMNS_TO_BE_DISPLAYED"></tr>
         <tr mat-row *matRowDef="let row; columns: COLUMNS_TO_BE_DISPLAYED;" class="element-row"
-            [class.expanded-row]="idEquals(row, expandedElement)" (click)="setExpandedElement(row)"
+            [class.expanded-row]="idEquals(row, expandedElement)" (click)="expandedElement = getExpandedEle(row)"
             matTooltip="Click to expand"></tr>
 
         <tr mat-row *matRowDef="let element; columns: ['expandedElement'];" class="detail-row">
