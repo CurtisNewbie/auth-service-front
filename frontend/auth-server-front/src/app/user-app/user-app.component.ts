@@ -24,11 +24,10 @@ export class UserAppComponent implements OnInit {
   constructor(
     private appService: AppService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.userService.fetchUserInfo();
-    this.fetchList();
   }
 
   fetchList() {
@@ -37,13 +36,15 @@ export class UserAppComponent implements OnInit {
       .subscribe({
         next: (resp) => {
           this.apps = resp.data.payload;
-          this.pagingController.updatePages(resp.data.pagingVo.total);
+          this.pagingController.onTotalChanged(resp.data.pagingVo);
         },
       });
   }
 
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchList();
     this.fetchList();
   }
+
 }

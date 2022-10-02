@@ -1,9 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { PageEvent } from "@angular/material/paginator";
-import { OperateLog } from "src/models/operate-log";
+import { environment } from "src/environments/environment";
+import { FetchOperateLogListResp, OperateLog } from "src/models/operate-log";
 import { PagingController } from "src/models/paging";
-import { HttpClientService } from "../http-client-service.service";
 import { UserService } from "../user.service";
+import { HClient } from "../util/api-util";
 
 @Component({
   selector: "app-operate-history",
@@ -12,7 +13,7 @@ import { UserService } from "../user.service";
 })
 export class OperateHistoryComponent implements OnInit {
   operateLogList: OperateLog[] = [];
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
   COLUMNS_TO_BE_DISPLAYED = [
     "id",
     "user",
@@ -23,26 +24,30 @@ export class OperateHistoryComponent implements OnInit {
   ];
 
   constructor(
-    private http: HttpClientService,
+    private http: HClient,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.userService.fetchUserInfo();
-    this.fetchOperateLogList();
   }
 
   fetchOperateLogList(): void {
-    this.http.fetchOperateLogList(this.pagingController.paging).subscribe({
+    this.http.post<FetchOperateLogListResp>(
+      environment.authServicePath, "/operate/history",
+      this.pagingController.paging
+    ).subscribe({
       next: (resp) => {
         this.operateLogList = resp.data.operateLogVoList;
-        this.pagingController.updatePages(resp.data.pagingVo.total);
+        this.pagingController.onTotalChanged(resp.data.pagingVo);
       },
     });
   }
 
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchOperateLogList();
     this.fetchOperateLogList();
   }
+
 }

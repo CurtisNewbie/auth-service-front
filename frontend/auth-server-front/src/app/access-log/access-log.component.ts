@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { PageEvent } from "@angular/material/paginator";
-import { AccessLog } from "src/models/access-log";
-import { Paging, PagingConst, PagingController } from "src/models/paging";
-import { HttpClientService } from "../http-client-service.service";
+import { environment } from "src/environments/environment";
+import { AccessLog, FetchAccessLogList } from "src/models/access-log";
+import { PagingController } from "src/models/paging";
+import { UserService } from "../user.service";
+import { HClient } from "../util/api-util";
 
 @Component({
   selector: "app-access-log",
@@ -19,38 +20,37 @@ export class AccessLogComponent implements OnInit {
     "url",
   ];
   accessLogList: AccessLog[] = [];
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
 
-  constructor(private httpClient: HttpClientService) {}
+  constructor(private http: HClient, private userService: UserService) { }
 
   ngOnInit() {
-    this.fetchAccessLogList();
+    this.userService.fetchUserInfo();
   }
 
   /**
    * Fetch access log list
    */
   fetchAccessLogList(): void {
-    this.httpClient
-      .fetchAccessLogList({
+    this.http.post<FetchAccessLogList>(
+      environment.authServicePath, "/access/history",
+      {
         pagingVo: this.pagingController.paging,
-      })
-      .subscribe({
-        next: (resp) => {
-          this.accessLogList = resp.data.payload;
-          let total = resp.data.pagingVo.total;
-          if (total != null) {
-            this.pagingController.updatePages(total);
-          }
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+      }
+    ).subscribe({
+      next: (resp) => {
+        this.accessLogList = resp.data.payload;
+        this.pagingController.onTotalChanged(resp.data.pagingVo);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchAccessLogList();
     this.fetchAccessLogList();
   }
 }

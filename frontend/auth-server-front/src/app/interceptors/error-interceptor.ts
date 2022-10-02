@@ -2,16 +2,13 @@ import { Injectable } from "@angular/core";
 import {
   HttpInterceptor,
   HttpEvent,
-  HttpResponse,
   HttpRequest,
   HttpHandler,
   HttpErrorResponse,
-  HttpHeaderResponse,
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
-import { catchError, filter } from "rxjs/operators";
+import { catchError } from "rxjs/operators";
 import { Resp } from "src/models/resp";
-import { Router } from "@angular/router";
 import { UserService } from "../user.service";
 import { NotificationService } from "../notification.service";
 
@@ -21,10 +18,9 @@ import { NotificationService } from "../notification.service";
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
   constructor(
-    private router: Router,
     private userService: UserService,
     private notifi: NotificationService
-  ) {}
+  ) { }
 
   intercept(
     httpRequest: HttpRequest<any>,
@@ -33,11 +29,12 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(httpRequest).pipe(
       catchError((e) => {
         if (e instanceof HttpErrorResponse) {
-          console.log("Http error response status:", e.status);
-
-          if (e.status === 401 || e.status === 403) {
+          if (e.status === 401) {
             this.notifi.toast("Please login first");
-            this.setLogout();
+            this.userService.logout();
+          } else if (e.status === 403) {
+            let r: Resp<any> = e.error as Resp<any>;
+            this.notifi.toast(r.msg, 6000);
           } else {
             this.notifi.toast("Unknown server error, please try again later");
           }
@@ -45,9 +42,5 @@ export class ErrorInterceptor implements HttpInterceptor {
         }
       })
     );
-  }
-
-  private setLogout(): void {
-    this.userService.logout();
   }
 }

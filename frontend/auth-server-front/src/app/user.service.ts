@@ -1,41 +1,37 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { Injectable, OnDestroy } from "@angular/core";
 import { Observable, Subject, Subscription } from "rxjs";
 import {
   ChangePasswordParam,
-  FetchUserInfoParam,
-  FetchUserInfoResp as FetchUserInfoResp,
-  UpdateUserInfoParam,
   UserInfo,
 } from "src/models/user-info";
 import { NavigationService, NavType } from "./navigation.service";
 import { NotificationService } from "./notification.service";
 import {
-  buildApiPath,
-  buildOptions,
   setToken,
   getToken,
   onEmptyToken,
+  HClient,
 } from "./util/api-util";
 import { Resp } from "src/models/resp";
 import { timer } from "rxjs";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root",
 })
-export class UserService {
+export class UserService implements OnDestroy {
+
   private roleSubject = new Subject<string>();
   private isLoggedInSubject = new Subject<boolean>();
   private userInfoSubject = new Subject<UserInfo>();
 
-  // refreshed every 5min
   private tokenRefresher: Subscription = timer(60_000, 360_000).subscribe(
     () => {
       let t = getToken();
       if (t != null) {
         this.exchangeToken(t).subscribe({
           next: (resp) => {
-            console.log("token refreshed");
+            // console.log("token refreshed");
             setToken(resp.data);
           },
         });
@@ -50,11 +46,15 @@ export class UserService {
     this.isLoggedInSubject.asObservable();
 
   constructor(
-    private http: HttpClient,
+    private http: HClient,
     private nav: NavigationService,
     private notifi: NotificationService
   ) {
     onEmptyToken(() => this.logout());
+  }
+
+  ngOnDestroy(): void {
+    this.tokenRefresher.unsubscribe();
   }
 
   /**
@@ -63,15 +63,12 @@ export class UserService {
    * @param password
    */
   public login(username: string, password: string): Observable<Resp<any>> {
-    return this.http.post<Resp<any>>(
-      buildApiPath("/user/login"),
+    return this.http.post<any>(
+      environment.authServicePath, "/user/login",
       {
         username: username,
         password: password,
         appName: "auth-service",
-      },
-      {
-        withCredentials: true,
       }
     );
   }
@@ -86,34 +83,15 @@ export class UserService {
   }
 
   /**
-   * Add user, only admin is allowed to add user
-   * @param username
-   * @param password
-   * @returns
-   */
-  public addUser(
-    username: string,
-    password: string,
-    userRole: string
-  ): Observable<Resp<any>> {
-    return this.http.post<Resp<any>>(
-      buildApiPath("/user/add"),
-      { username, password, userRole },
-      buildOptions()
-    );
-  }
-
-  /**
    * Register user
    * @param username
    * @param password
    * @returns
    */
   public register(username: string, password: string): Observable<Resp<any>> {
-    return this.http.post<Resp<any>>(
-      buildApiPath("/user/register/request"),
+    return this.http.post<any>(
+      environment.authServicePath, "/user/register/request",
       { username, password },
-      buildOptions()
     );
   }
 
@@ -122,7 +100,7 @@ export class UserService {
    */
   public fetchUserInfo(callback = null): void {
     this.http
-      .get<Resp<UserInfo>>(buildApiPath("/user/info"), buildOptions())
+      .get<UserInfo>(environment.authServicePath, "/user/info")
       .subscribe({
         next: (resp) => {
           if (resp.data) {
@@ -160,65 +138,12 @@ export class UserService {
   }
 
   /**
-   * Fetch list of user infos (only admin is allowed)
-   */
-  public fetchUserList(
-    param: FetchUserInfoParam
-  ): Observable<Resp<FetchUserInfoResp>> {
-    return this.http.post<Resp<FetchUserInfoResp>>(
-      buildApiPath("/user/list"),
-      param,
-      buildOptions()
-    );
-  }
-
-  /**
-   * Update user info (only admin is allowed)
-   */
-  public updateUserInfo(param: UpdateUserInfoParam): Observable<Resp<void>> {
-    return this.http.post<Resp<void>>(
-      buildApiPath("/user/info/update"),
-      param,
-      buildOptions()
-    );
-  }
-
-  /**
-   * Delete a disabled user (only admin is allowed)
-   */
-  public deleteDisabledUser(param: { id: number }): Observable<Resp<void>> {
-    return this.http.post<Resp<void>>(
-      buildApiPath("/user/delete"),
-      param,
-      buildOptions()
-    );
-  }
-
-  /**
-   * Fetch user details
-   */
-  public fetchUserDetails(): Observable<
-    Resp<{
-      id;
-      username;
-      role;
-      registerDate;
-    }>
-  > {
-    return this.http.get<Resp<any>>(
-      buildApiPath("/user/detail"),
-      buildOptions()
-    );
-  }
-
-  /**
    * Change password
    */
   public changePassword(param: ChangePasswordParam): Observable<Resp<any>> {
-    return this.http.post<Resp<any>>(
-      buildApiPath("/user/password/update"),
+    return this.http.post<any>(
+      environment.authServicePath, "/user/password/update",
       param,
-      buildOptions()
     );
   }
 
@@ -226,18 +151,10 @@ export class UserService {
    * Exchange Token
    */
   private exchangeToken(token: string): Observable<Resp<string>> {
-    return this.http.post<Resp<any>>(
-      buildApiPath("/token/exchange"),
+    return this.http.post<any>(
+      environment.authServicePath, "/token/exchange",
       { token: token },
-      buildOptions()
     );
   }
 
-  public reviewUserRegistration(param): Observable<Resp<void>> {
-    return this.http.post<Resp<void>>(
-      buildApiPath("/user/registration/review"),
-      param,
-      buildOptions()
-    );
-  }
 }

@@ -1,14 +1,12 @@
-import { HttpClient } from "@angular/common/http";
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { Resp } from "src/models/resp";
 import { UserToken } from "src/models/tokens";
 import { PagingController, Paging } from "src/models/paging";
-import { buildApiPath, buildOptions } from "../util/api-util";
+import { HClient } from "../util/api-util";
 import { MatPaginator } from "@angular/material/paginator";
-import { animateElementExpanding } from "src/animate/animate-util";
+import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/animate-util";
 import { UserService } from "../user.service";
-import { ThrowStmt } from "@angular/compiler";
 import { NotificationService } from "../notification.service";
+import { environment } from "src/environments/environment";
 
 @Component({
   selector: "app-manage-keys",
@@ -26,7 +24,7 @@ export class ManageKeysComponent implements OnInit {
   ];
   expandedElement: UserToken = null;
   tokens: UserToken[] = [];
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
   query = {
     name: "",
   };
@@ -37,31 +35,32 @@ export class ManageKeysComponent implements OnInit {
   @ViewChild("paginator", { static: true })
   paginator: MatPaginator;
 
+  idEquals = isIdEqual;
+  getExpandedEle = getExpanded;
+
   constructor(
-    private http: HttpClient,
+    private http: HClient,
     private userService: UserService,
     private notifi: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.fetchList();
     this.userService.fetchUserInfo();
   }
 
   fetchList() {
     this.http
-      .post<Resp<{ pagingVo: Paging; payload: UserToken[] }>>(
-        buildApiPath("/user/key/list"),
+      .post<{ pagingVo: Paging; payload: UserToken[] }>(
+        environment.authServicePath, "/user/key/list",
         {
           payload: { name: this.query.name },
           pagingVo: this.pagingController.paging,
         },
-        buildOptions()
       )
       .subscribe((resp) => {
         if (resp.data) {
           this.tokens = resp.data.payload;
-          this.pagingController.updatePages(resp.data.pagingVo.total);
+          this.pagingController.onTotalChanged(resp.data.pagingVo);
           if (this.panelDisplayed) this.panelDisplayed = false;
         }
       });
@@ -73,24 +72,6 @@ export class ManageKeysComponent implements OnInit {
     this.query = {
       name: "",
     };
-  }
-
-  idEquals(tl: UserToken, tr: UserToken): boolean {
-    if (tl == null || tr == null) return false;
-    return tl.id === tr.id;
-  }
-
-  setExpandedElement(row: UserToken) {
-    if (this.idEquals(row, this.expandedElement)) {
-      this.expandedElement = null;
-      return;
-    }
-    this.expandedElement = this.copy(row);
-  }
-
-  copy(obj: UserToken): UserToken {
-    if (obj == null) return null;
-    return { ...obj };
   }
 
   generateRandomKey() {
@@ -109,13 +90,12 @@ export class ManageKeysComponent implements OnInit {
     this.password = null;
 
     this.http
-      .post<Resp<void>>(
-        buildApiPath("/user/key/generate"),
+      .post<void>(
+        environment.authServicePath, "/user/key/generate",
         {
           password: pw,
           keyName: keyName,
         },
-        buildOptions()
       )
       .subscribe({
         next: (resp) => {
@@ -128,12 +108,11 @@ export class ManageKeysComponent implements OnInit {
 
   deleteUserKey(id: number) {
     this.http
-      .post<Resp<void>>(
-        buildApiPath("/user/key/delete"),
+      .post<void>(
+        environment.authServicePath, "/user/key/delete",
         {
           userKeyId: id,
         },
-        buildOptions()
       )
       .subscribe({
         complete: () => this.fetchList(),
@@ -162,5 +141,11 @@ export class ManageKeysComponent implements OnInit {
     } finally {
       document.body.removeChild(textarea);
     }
+  }
+
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchList();
+    this.fetchList();
   }
 }

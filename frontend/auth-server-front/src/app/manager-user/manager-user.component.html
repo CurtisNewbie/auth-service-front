@@ -197,9 +197,6 @@
 
     </table>
 
-    <mat-paginator #paginator [length]="pagingController.paging.total" [pageSize]="pagingController.paging.limit"
-        [pageSizeOptions]="pagingController.PAGE_LIMIT_OPTIONS" (page)="handle($event)" aria-label="Select page">
-    </mat-paginator>
-
+    <app-controlled-paginator (controllerReady)="onPagingControllerReady($event)"></app-controlled-paginator>
 
 </div>

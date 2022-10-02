@@ -1,9 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { PageEvent } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { PagingController } from "src/models/paging";
 import { TaskHistory } from "src/models/task";
-import { HttpClientService } from "../http-client-service.service";
 import { TaskService } from "../task.service";
 
 export interface TaskHistoryData {
@@ -28,7 +26,7 @@ export class TaskHistoryComponent implements OnInit {
   jobName: string = null;
   taskId: number = null;
   runBy: string = "";
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
   taskHistoryList: TaskHistory[] = [];
   startDate: Date = null;
   endDate: Date = null;
@@ -36,19 +34,20 @@ export class TaskHistoryComponent implements OnInit {
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
       let ti = params.get("taskId");
       if (ti != null) this.taskId = Number(ti);
+
     });
-    this.fetchHistoryList();
   }
 
   fetchHistoryList() {
-    let epochStart = null;
-    let epochEnd = null;
+    let epochStart: number = null;
+    let epochEnd: number = null;
     if (this.startDate != null) epochStart = this.startDate.getTime();
     if (this.endDate != null) epochEnd = this.endDate.getTime();
     if (epochStart > epochEnd) {
@@ -69,14 +68,9 @@ export class TaskHistoryComponent implements OnInit {
       .subscribe({
         next: (resp) => {
           this.taskHistoryList = resp.data.list;
-          this.pagingController.updatePages(resp.data.pagingVo.total);
+          this.pagingController.onTotalChanged(resp.data.pagingVo);
         },
       });
-  }
-
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
-    this.fetchHistoryList();
   }
 
   onDatePickerChanged(): void {
@@ -99,5 +93,11 @@ export class TaskHistoryComponent implements OnInit {
     if (event.key === "Enter") {
       this.fetchHistoryList();
     }
+  }
+
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchHistoryList();
+    this.fetchHistoryList();
   }
 }

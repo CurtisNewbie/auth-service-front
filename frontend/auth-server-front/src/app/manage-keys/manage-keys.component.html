@@ -97,9 +97,6 @@
 
     </table>
 
-    <mat-paginator #paginator [length]="pagingController.paging.total" [pageSize]="pagingController.paging.limit"
-        [pageSizeOptions]="pagingController.PAGE_LIMIT_OPTIONS">
-    </mat-paginator>
-
+    <app-controlled-paginator (controllerReady)="onPagingControllerReady($event)"></app-controlled-paginator>
 
 </div>

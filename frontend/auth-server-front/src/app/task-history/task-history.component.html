@@ -5,7 +5,7 @@
 <mat-form-field appearance="fill" style="width: 100%;">
     <mat-label>Task Name</mat-label>
     <input matInput type="text" [(ngModel)]="jobName" (keyup)="onEnterKeyPressed($event)">
-    <button *ngIf="jobName" matSuffix class="btn-close" aria-label="Clear" (click)="jobName=''">
+    <button *ngIf="jobName" matSuffix aria-label="Clear" (click)="jobName=''" class="btn-close">
     </button>
 </mat-form-field>
 
@@ -79,7 +79,4 @@
     <tr mat-header-row *matHeaderRowDef="COLUMNS_TO_BE_DISPLAYED"></tr>
 </table>
 
-<!-- paginator -->
-<mat-paginator [length]="pagingController.paging.total" [pageSize]="pagingController.paging.limit"
-    [pageSizeOptions]="pagingController.PAGE_LIMIT_OPTIONS" (page)="handle($event)" aria-label="Select page">
-</mat-paginator>
+<app-controlled-paginator (controllerReady)="onPagingControllerReady($event)"></app-controlled-paginator>

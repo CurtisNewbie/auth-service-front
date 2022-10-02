@@ -41,8 +41,8 @@ import { MatCheckboxModule } from "@angular/material/checkbox";
 import { ScrollingModule } from "@angular/cdk/scrolling";
 import { MatMenuModule } from "@angular/material";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
-import { MockInterceptor } from "./interceptors/mock-interceptor";
 import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
+import { ControlledPaginatorComponent } from "./controlled-paginator/controlled-paginator.component";
 
 @NgModule({
   exports: [],
@@ -62,6 +62,7 @@ import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
     UserPermittedAppUpdateComponent,
     UserDetailComponent,
     ManageKeysComponent,
+    ControlledPaginatorComponent
   ],
   imports: [
     MatCardModule,
@@ -89,10 +90,9 @@ import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     { provide: APP_BASE_HREF, useValue: "/" },
-    { provide: HTTP_INTERCEPTORS, useClass: MockInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: RespInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

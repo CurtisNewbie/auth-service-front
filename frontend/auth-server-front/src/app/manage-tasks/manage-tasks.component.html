@@ -118,6 +118,7 @@
                                     <input matInput type="text" [(ngModel)]="expandedElement.jobName">
                                     <button *ngIf="expandedElement.jobName" matSuffix aria-label="Clear"
                                         (click)="expandedElement.jobName=''" class="btn-close">
+
                                     </button>
                                 </mat-form-field>
                             </div>
@@ -128,6 +129,7 @@
                                     <input matInput type="text" [(ngModel)]="expandedElement.cronExpr">
                                     <button *ngIf="expandedElement.cronExpr" matSuffix aria-label="Clear"
                                         (click)="expandedElement.cronExpr=''" class="btn-close">
+
                                     </button>
                                 </mat-form-field>
                             </div>
@@ -182,7 +184,7 @@
 
         <tr mat-header-row *matHeaderRowDef="COLUMNS_TO_BE_DISPLAYED"></tr>
         <tr mat-row *matRowDef="let row; columns: COLUMNS_TO_BE_DISPLAYED;" class="element-row"
-            [class.expanded-row]="idEquals(row, expandedElement)" (click)="setExpandedElement(row)"
+            [class.expanded-row]="idEquals(row, expandedElement)" (click)="expandedElement = getExpandedEle(row)"
             matTooltip="Click to expand"></tr>
 
         <tr mat-row *matRowDef="let element; columns: ['expandedElement'];" class="detail-row">
@@ -191,7 +193,4 @@
 
 </div>
 
-<!-- paginator -->
-<mat-paginator [length]="pagingController.paging.total" [pageSize]="pagingController.paging.limit"
-    [pageSizeOptions]="pagingController.PAGE_LIMIT_OPTIONS" (page)="handle($event)" aria-label="Select page">
-</mat-paginator>
+<app-controlled-paginator (controllerReady)="onPagingControllerReady($event)"></app-controlled-paginator>

@@ -1,9 +1,9 @@
-import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { environment } from "src/environments/environment";
 import { Paging } from "src/models/paging";
 import { Resp } from "src/models/resp";
-import { buildApiPath, buildOptions } from "./util/api-util";
+import { HClient } from "./util/api-util";
 
 export interface ListAllAppReqVo {
   pagingVo: Paging;
@@ -59,7 +59,7 @@ export interface UpdateUserAppsReqVo {
   providedIn: "root",
 })
 export class AppService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HClient) { }
 
   /**
    * List app information
@@ -67,10 +67,9 @@ export class AppService {
   public listAllApps(
     param: ListAllAppReqVo
   ): Observable<Resp<ListAllAppRespVo>> {
-    return this.http.post<Resp<ListAllAppRespVo>>(
-      buildApiPath("/app/list/all"),
+    return this.http.post<ListAllAppRespVo>(
+      environment.authServicePath, "/app/list/all",
       param,
-      buildOptions()
     );
   }
 
@@ -80,10 +79,9 @@ export class AppService {
   public listAppsForUser(
     param: ListAppsForUserReqVo
   ): Observable<Resp<AppBriefVo[]>> {
-    return this.http.post<Resp<AppBriefVo[]>>(
-      buildApiPath("/app/list/user"),
+    return this.http.post<AppBriefVo[]>(
+      environment.authServicePath, "/app/list/user",
       param,
-      buildOptions()
     );
   }
 
@@ -91,10 +89,9 @@ export class AppService {
    * Update user's permitted apps
    */
   public updateUserApps(param: UpdateUserAppsReqVo): Observable<Resp<void>> {
-    return this.http.post<Resp<void>>(
-      buildApiPath("/app/user/update"),
+    return this.http.post<void>(
+      environment.authServicePath, "/app/user/update",
       param,
-      buildOptions()
     );
   }
 
@@ -102,9 +99,8 @@ export class AppService {
    * Get all app brief info
    */
   public listAllAppsBrief() {
-    return this.http.get<Resp<AppBriefVo[]>>(
-      buildApiPath("/app/list/brief/all"),
-      buildOptions()
+    return this.http.get<AppBriefVo[]>(
+      environment.authServicePath, "/app/list/brief/all",
     );
   }
 }
