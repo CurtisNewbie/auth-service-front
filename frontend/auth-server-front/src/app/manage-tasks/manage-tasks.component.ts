@@ -12,7 +12,6 @@ import {
 } from "src/models/task";
 import { animateElementExpanding, getExpanded, isIdEqual } from "../../animate/animate-util";
 import { Option } from "src/models/select-util";
-import { PageEvent } from "@angular/material/paginator";
 import { NotificationService } from "../notification.service";
 import { TaskService } from "../task.service";
 import { NavigationService, NavType } from "../navigation.service";

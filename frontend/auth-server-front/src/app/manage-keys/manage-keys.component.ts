@@ -7,6 +7,7 @@ import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/ani
 import { UserService } from "../user.service";
 import { NotificationService } from "../notification.service";
 import { environment } from "src/environments/environment";
+import { expand } from "rxjs/operators";
 
 @Component({
   selector: "app-manage-keys",
@@ -36,7 +37,7 @@ export class ManageKeysComponent implements OnInit {
   paginator: MatPaginator;
 
   idEquals = isIdEqual;
-  getExpandedEle = getExpanded;
+  getExpandedEle = (row) => getExpanded(row, this.expandedElement);
 
   constructor(
     private http: HClient,
