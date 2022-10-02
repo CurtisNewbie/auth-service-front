@@ -1,7 +1,9 @@
+import { DatePipe, formatDate } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { PagingController } from "src/models/paging";
 import { TaskHistory } from "src/models/task";
+import { NotificationService } from "../notification.service";
 import { TaskService } from "../task.service";
 
 export interface TaskHistoryData {
@@ -31,6 +33,9 @@ export class TaskHistoryComponent implements OnInit {
   startDate: Date = null;
   endDate: Date = null;
 
+  datePickerLowerbound: Date;
+  datePickerUpperbound: Date;
+
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute
@@ -38,6 +43,14 @@ export class TaskHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    let ld = new Date();
+    ld.setFullYear(ld.getFullYear() - 1);
+    this.datePickerLowerbound = ld;
+
+    let ud = new Date();
+    ud.setFullYear(ud.getFullYear() + 1);
+    this.datePickerUpperbound = ud;
+
     this.route.paramMap.subscribe((params) => {
       let ti = params.get("taskId");
       if (ti != null) this.taskId = Number(ti);
@@ -46,23 +59,15 @@ export class TaskHistoryComponent implements OnInit {
   }
 
   fetchHistoryList() {
-    let epochStart: number = null;
-    let epochEnd: number = null;
-    if (this.startDate != null) epochStart = this.startDate.getTime();
-    if (this.endDate != null) epochEnd = this.endDate.getTime();
-    if (epochStart > epochEnd) {
-      let temp = epochStart;
-      epochStart = epochEnd;
-      epochEnd = temp;
-    }
-
+    const start: Date = this.startDate;
+    const end: Date = this.endDate;
     this.taskService
       .fetchTaskHistory({
         pagingVo: this.pagingController.paging,
         jobName: this.jobName,
         taskId: this.taskId,
-        startTime: epochStart,
-        endTime: epochEnd,
+        startTime: start ? formatDate(start, 'yyyy-MM-dd hh:mm:ss', 'en-US') : null,
+        endTime: end ? formatDate(end, 'yyyy-MM-dd hh:mm:ss', 'en-US') : null,
         runBy: this.runBy,
       })
       .subscribe({
@@ -74,8 +79,7 @@ export class TaskHistoryComponent implements OnInit {
   }
 
   onDatePickerChanged(): void {
-    if (this.startDate == null || this.endDate == null) return;
-    if (this.startDate > this.endDate) {
+    if (this.startDate && this.endDate && this.startDate > this.endDate) {
       let temp = this.endDate;
       this.endDate = this.startDate;
       this.startDate = temp;
