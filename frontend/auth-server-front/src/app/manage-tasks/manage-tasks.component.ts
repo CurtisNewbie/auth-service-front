@@ -49,7 +49,7 @@ export class ManageTasksComponent implements OnInit {
   tasks: Task[] = [];
   searchParam: ListTaskByPageReqVo = emptyListTaskByPageReqVo();
   updateParam: UpdateTaskReqVo;
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
   expandedElement: Task;
 
   idEquals = isIdEqual;

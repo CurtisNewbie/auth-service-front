@@ -19,7 +19,7 @@ export class UserAppComponent implements OnInit {
     "updateBy",
   ];
   apps: AppVo[] = [];
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
 
   constructor(
     private appService: AppService,

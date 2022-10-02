@@ -7,7 +7,6 @@ import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/ani
 import { UserService } from "../user.service";
 import { NotificationService } from "../notification.service";
 import { environment } from "src/environments/environment";
-import { expand } from "rxjs/operators";
 
 @Component({
   selector: "app-manage-keys",
@@ -32,9 +31,6 @@ export class ManageKeysComponent implements OnInit {
   panelDisplayed: boolean = false;
   password: string = null;
   newUserKeyName: string = null;
-
-  @ViewChild("paginator", { static: true })
-  paginator: MatPaginator;
 
   idEquals = isIdEqual;
   getExpandedEle = (row) => getExpanded(row, this.expandedElement);
@@ -69,7 +65,7 @@ export class ManageKeysComponent implements OnInit {
 
   reset() {
     this.expandedElement = null;
-    this.paginator.firstPage();
+    this.pagingController.firstPage();
     this.query = {
       name: "",
     };

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import { animateElementExpanding } from "src/animate/animate-util";
 import { environment } from "src/environments/environment";
 import { PagingController } from "src/models/paging";
