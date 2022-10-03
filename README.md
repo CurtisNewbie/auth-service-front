@@ -1,4 +1,4 @@
-# auth-service-front
+# auth-service-front v1.1.4
 
 Angular Frontend for Auth Service 
 
