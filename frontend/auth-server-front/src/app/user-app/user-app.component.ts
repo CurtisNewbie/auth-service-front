@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { PageEvent } from "@angular/material";
+import { PageEvent } from "@angular/material/paginator";
 import { PagingController } from "src/models/paging";
 import { AppService, AppVo } from "../app.service";
 import { UserService } from "../user.service";
@@ -19,16 +19,15 @@ export class UserAppComponent implements OnInit {
     "updateBy",
   ];
   apps: AppVo[] = [];
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
 
   constructor(
     private appService: AppService,
     private userService: UserService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.userService.fetchUserInfo();
-    this.fetchList();
   }
 
   fetchList() {
@@ -37,13 +36,15 @@ export class UserAppComponent implements OnInit {
       .subscribe({
         next: (resp) => {
           this.apps = resp.data.payload;
-          this.pagingController.updatePages(resp.data.pagingVo.total);
+          this.pagingController.onTotalChanged(resp.data.pagingVo);
         },
       });
   }
 
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchList();
     this.fetchList();
   }
+
 }

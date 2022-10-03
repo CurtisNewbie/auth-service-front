@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
-import { MatDialog, MatDialogRef } from "@angular/material";
-import { MatPaginator, PageEvent } from "@angular/material/paginator";
-import { animateElementExpanding } from "src/animate/animate-util";
+import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/animate-util";
+import { environment } from "src/environments/environment";
 import { PagingController } from "src/models/paging";
 import {
   emptyFetchUserInfoParam,
   FetchUserInfoParam,
+  FetchUserInfoResp,
   UserInfo,
   UserIsDisabledEnum,
   UserRoleEnum,
@@ -15,7 +16,8 @@ import {
 import { ConfirmDialogComponent } from "../dialog/confirm/confirm-dialog.component";
 import { NotificationService } from "../notification.service";
 import { UserPermittedAppUpdateComponent } from "../user-permitted-app-update/user-permitted-app-update.component";
-import { UserService } from "../user.service";
+import { HClient } from "../util/api-util";
+import { isEnterKey } from "../util/condition";
 
 @Component({
   selector: "app-manager-user",
@@ -47,21 +49,20 @@ export class ManagerUserComponent implements OnInit {
   addUserPanelDisplayed: boolean = false;
   expandedElement: UserInfo = null;
   searchParam: FetchUserInfoParam = emptyFetchUserInfoParam();
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
   expandedIsDisabled: boolean = false;
 
-  @ViewChild("paginator", { static: true })
-  paginator: MatPaginator;
+  idEquals = isIdEqual;
+  getExpandedEle = (row) => getExpanded(row, this.expandedElement);
+  isEnter = isEnterKey;
 
   constructor(
-    private userService: UserService,
     private notifi: NotificationService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+    private http: HClient
+  ) { }
 
   ngOnInit() {
-    this.fetchUserInfoList();
-    this.pagingController.bind(this.paginator);
   }
 
   /**
@@ -72,40 +73,32 @@ export class ManagerUserComponent implements OnInit {
       this.notifi.toast("Please enter username and password");
       return;
     }
-    this.userService
-      .addUser(
-        this.usernameToBeAdded,
-        this.passswordToBeAdded,
-        this.userRoleOfAddedUser
-      )
-      .subscribe({
-        next: (resp) => {
-          console.log("Successfully added guest:", this.usernameToBeAdded);
-        },
-        complete: () => {
-          this.userRoleOfAddedUser = UserRoleEnum.GUEST;
-          this.usernameToBeAdded = null;
-          this.passswordToBeAdded = null;
-          this.addUserPanelDisplayed = false;
-          this.fetchUserInfoList();
-        },
-      });
-  }
 
-  fetchUserInfoList(): void {
-    this.searchParam.pagingVo = this.pagingController.paging;
-    this.userService.fetchUserList(this.searchParam).subscribe({
-      next: (resp) => {
-        this.userInfoList = resp.data.list;
-        this.pagingController.updatePages(resp.data.pagingVo.total);
+    this.http.post<any>(
+      environment.authServicePath, "/user/add",
+      { username: this.usernameToBeAdded, password: this.passswordToBeAdded, userRole: this.userRoleOfAddedUser },
+    ).subscribe({
+      complete: () => {
+        this.userRoleOfAddedUser = UserRoleEnum.GUEST;
+        this.usernameToBeAdded = null;
+        this.passswordToBeAdded = null;
+        this.addUserPanelDisplayed = false;
+        this.fetchUserInfoList();
       },
     });
   }
 
-  searchNameInputKeyPressed(event: any): void {
-    if (event.key === "Enter") {
-      this.fetchUserInfoList();
-    }
+  fetchUserInfoList(): void {
+    this.searchParam.pagingVo = this.pagingController.paging;
+    this.http.post<FetchUserInfoResp>(
+      environment.authServicePath, "/user/list",
+      this.searchParam,
+    ).subscribe({
+      next: (resp) => {
+        this.userInfoList = resp.data.list;
+        this.pagingController.onTotalChanged(resp.data.pagingVo);
+      },
+    });
   }
 
   resetSearchParam(): void {
@@ -114,27 +107,23 @@ export class ManagerUserComponent implements OnInit {
     this.pagingController.firstPage();
   }
 
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
-    this.fetchUserInfoList();
-  }
-
   /**
    * Update user info (only admin is allowed)
    */
   updateUserInfo(): void {
-    this.userService
-      .updateUserInfo({
+    this.http.post<void>(
+      environment.authServicePath, "/user/info/update",
+      {
         id: this.expandedElement.id,
         role: this.expandedElement.role,
         isDisabled: this.expandedElement.isDisabled,
-      })
-      .subscribe({
-        complete: () => {
-          this.fetchUserInfoList();
-          this.expandedElement = null;
-        },
-      });
+      },
+    ).subscribe({
+      complete: () => {
+        this.fetchUserInfoList();
+        this.expandedElement = null;
+      },
+    });
   }
 
   /**
@@ -155,14 +144,15 @@ export class ManagerUserComponent implements OnInit {
     dialogRef.afterClosed().subscribe((confirm) => {
       console.log(confirm);
       if (confirm) {
-        this.userService
-          .deleteDisabledUser({ id: this.expandedElement.id })
-          .subscribe({
-            complete: () => {
-              this.expandedElement = null;
-              this.fetchUserInfoList();
-            },
-          });
+        this.http.post<void>(
+          environment.authServicePath, "/user/delete",
+          { id: this.expandedElement.id },
+        ).subscribe({
+          complete: () => {
+            this.expandedElement = null;
+            this.fetchUserInfoList();
+          },
+        });
       }
     });
   }
@@ -182,38 +172,19 @@ export class ManagerUserComponent implements OnInit {
     dialogRef.afterClosed().subscribe();
   }
 
-  idEquals(tl: UserInfo, tr: UserInfo): boolean {
-    if (tl == null || tr == null) return false;
-    return tl.id === tr.id;
-  }
-
-  setExpandedElement(row: UserInfo) {
-    if (this.idEquals(row, this.expandedElement)) {
-      this.expandedElement = null;
-      return;
-    }
-    this.expandedElement = this.copy(row);
-    this.expandedIsDisabled =
-      this.expandedElement.isDisabled === this.USER_IS_DISABLED;
-  }
-
-  copy(obj: UserInfo): UserInfo {
-    if (obj == null) return null;
-    return { ...obj };
-  }
-
   reviewRegistration(userId: number, reviewStatus: string) {
-    this.userService
-      .reviewUserRegistration({
+    this.http.post<void>(
+      environment.authServicePath, "/user/registration/review",
+      {
         userId: userId,
         reviewStatus: reviewStatus,
-      })
-      .subscribe({
-        complete: () => {
-          this.fetchUserInfoList();
-          this.expandedElement = null;
-        },
-      });
+      },
+    ).subscribe({
+      complete: () => {
+        this.fetchUserInfoList();
+        this.expandedElement = null;
+      },
+    });
   }
 
   approveRegistration(userId: number) {
@@ -222,5 +193,11 @@ export class ManagerUserComponent implements OnInit {
 
   rejectRegistration(userId: number) {
     this.reviewRegistration(userId, "REJECTED");
+  }
+
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchUserInfoList();
+    this.fetchUserInfoList();
   }
 }

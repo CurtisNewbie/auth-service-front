@@ -1,6 +1,15 @@
 import { Component, OnInit } from "@angular/core";
+import { environment } from "src/environments/environment";
 import { NavigationService, NavType } from "../navigation.service";
 import { UserService } from "../user.service";
+import { HClient } from "../util/api-util";
+
+export interface UserDetail {
+  id?: string;
+  username?: string;
+  role?: string;
+  registerDate?: string;
+}
 
 @Component({
   selector: "app-user-detail",
@@ -8,20 +17,18 @@ import { UserService } from "../user.service";
   styleUrls: ["./user-detail.component.css"],
 })
 export class UserDetailComponent implements OnInit {
-  userDetail = {
-    id: "",
-    username: "",
-    role: "",
-    registerDate: "",
-  };
+  userDetail: UserDetail = {};
   constructor(
     private userService: UserService,
-    private nav: NavigationService
-  ) {}
+    private nav: NavigationService,
+    private http: HClient
+  ) { }
 
   ngOnInit() {
     this.userService.fetchUserInfo();
-    this.userService.fetchUserDetails().subscribe({
+    this.http.get<UserDetail>(
+      environment.authServicePath, "/user/detail",
+    ).subscribe({
       next: (resp) => {
         this.userDetail = resp.data;
       },

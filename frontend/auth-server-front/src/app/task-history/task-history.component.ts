@@ -1,10 +1,10 @@
+import { formatDate } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { PageEvent } from "@angular/material";
 import { ActivatedRoute } from "@angular/router";
 import { PagingController } from "src/models/paging";
 import { TaskHistory } from "src/models/task";
-import { HttpClientService } from "../http-client-service.service";
 import { TaskService } from "../task.service";
+import { isEnterKey } from "../util/condition";
 
 export interface TaskHistoryData {
   taskId: number;
@@ -28,60 +28,59 @@ export class TaskHistoryComponent implements OnInit {
   jobName: string = null;
   taskId: number = null;
   runBy: string = "";
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
   taskHistoryList: TaskHistory[] = [];
   startDate: Date = null;
   endDate: Date = null;
 
+  datePickerLowerbound: Date;
+  datePickerUpperbound: Date;
+
+  isEnter = isEnterKey;
+
   constructor(
     private taskService: TaskService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
+    let ld = new Date();
+    ld.setFullYear(ld.getFullYear() - 1);
+    this.datePickerLowerbound = ld;
+
+    let ud = new Date();
+    ud.setFullYear(ud.getFullYear() + 1);
+    this.datePickerUpperbound = ud;
+
     this.route.paramMap.subscribe((params) => {
       let ti = params.get("taskId");
       if (ti != null) this.taskId = Number(ti);
     });
-    this.fetchHistoryList();
   }
 
   fetchHistoryList() {
-    let epochStart = null;
-    let epochEnd = null;
-    if (this.startDate != null) epochStart = this.startDate.getTime();
-    if (this.endDate != null) epochEnd = this.endDate.getTime();
-    if (epochStart > epochEnd) {
-      let temp = epochStart;
-      epochStart = epochEnd;
-      epochEnd = temp;
-    }
-
+    const start: Date = this.startDate;
+    const end: Date = this.endDate;
     this.taskService
       .fetchTaskHistory({
         pagingVo: this.pagingController.paging,
         jobName: this.jobName,
         taskId: this.taskId,
-        startTime: epochStart,
-        endTime: epochEnd,
+        startTime: start ? formatDate(start, 'yyyy-MM-dd hh:mm:ss', 'en-US') : null,
+        endTime: end ? formatDate(end, 'yyyy-MM-dd hh:mm:ss', 'en-US') : null,
         runBy: this.runBy,
       })
       .subscribe({
         next: (resp) => {
           this.taskHistoryList = resp.data.list;
-          this.pagingController.updatePages(resp.data.pagingVo.total);
+          this.pagingController.onTotalChanged(resp.data.pagingVo);
         },
       });
   }
 
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
-    this.fetchHistoryList();
-  }
-
   onDatePickerChanged(): void {
-    if (this.startDate == null || this.endDate == null) return;
-    if (this.startDate > this.endDate) {
+    if (this.startDate && this.endDate && this.startDate > this.endDate) {
       let temp = this.endDate;
       this.endDate = this.startDate;
       this.startDate = temp;
@@ -95,9 +94,9 @@ export class TaskHistoryComponent implements OnInit {
     this.endDate = null;
   }
 
-  onEnterKeyPressed(event: any): void {
-    if (event.key === "Enter") {
-      this.fetchHistoryList();
-    }
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchHistoryList();
+    this.fetchHistoryList();
   }
 }

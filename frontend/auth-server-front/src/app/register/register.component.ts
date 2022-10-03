@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { NavigationService, NavType } from "../navigation.service";
 import { NotificationService } from "../notification.service";
 import { UserService } from "../user.service";
+import { isEnterKey } from "../util/condition";
 
 @Component({
   selector: "app-register",
@@ -11,20 +12,15 @@ import { UserService } from "../user.service";
 export class RegisterComponent implements OnInit {
   usernameInput: string = "";
   passwordInput: string = "";
+  isEnter = isEnterKey;
 
   constructor(
     private userService: UserService,
     private notifi: NotificationService,
     private nav: NavigationService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
-
-  passwordInputKeyPressed(event: any): void {
-    if (event.key === "Enter") {
-      this.register();
-    }
-  }
+  ngOnInit() { }
 
   register(): void {
     if (!this.usernameInput || !this.passwordInput) {

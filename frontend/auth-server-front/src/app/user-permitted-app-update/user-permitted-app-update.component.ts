@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from "@angular/core";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { AppBriefVo, AppService } from "../app.service";
 import { NotificationService } from "../notification.service";
 
@@ -28,7 +28,7 @@ export class UserPermittedAppUpdateComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: UserAppDialogData,
     private appService: AppService,
     private notifi: NotificationService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.fetchPermittedApps();

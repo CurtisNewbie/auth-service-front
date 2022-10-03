@@ -10,13 +10,12 @@ import {
   TASK_ENABLED_OPTIONS,
   UpdateTaskReqVo,
 } from "src/models/task";
-import { animateElementExpanding } from "../../animate/animate-util";
+import { animateElementExpanding, getExpanded, isIdEqual } from "../../animate/animate-util";
 import { Option } from "src/models/select-util";
-import { PageEvent } from "@angular/material/paginator";
 import { NotificationService } from "../notification.service";
 import { TaskService } from "../task.service";
 import { NavigationService, NavType } from "../navigation.service";
-import { UserService } from "../user.service";
+import { isEnterKey } from "../util/condition";
 
 @Component({
   selector: "app-manage-tasks",
@@ -50,19 +49,23 @@ export class ManageTasksComponent implements OnInit {
   tasks: Task[] = [];
   searchParam: ListTaskByPageReqVo = emptyListTaskByPageReqVo();
   updateParam: UpdateTaskReqVo;
-  pagingController: PagingController = new PagingController();
+  pagingController: PagingController;
   expandedElement: Task;
 
+  idEquals = isIdEqual;
+  getExpandedEle = (row) => getExpanded(row, this.expandedElement);
+  isEnter = isEnterKey;
+
   constructor(
-    private userService: UserService,
     private taskService: TaskService,
     private notifi: NotificationService,
     private navi: NavigationService
-  ) {}
+  ) {
+
+  }
 
   ngOnInit() {
-    this.userService.fetchUserInfo();
-    this.fetchTaskList();
+
   }
 
   fetchTaskList(): void {
@@ -70,32 +73,9 @@ export class ManageTasksComponent implements OnInit {
     this.taskService.fetchTaskList(this.searchParam).subscribe({
       next: (resp) => {
         this.tasks = resp.data.list;
-        this.pagingController.updatePages(resp.data.pagingVo.total);
+        this.pagingController.onTotalChanged(resp.data.pagingVo);
       },
     });
-  }
-
-  copy(task: Task): Task {
-    if (task == null) return null;
-    return { ...task };
-  }
-
-  handle(e: PageEvent): void {
-    this.pagingController.handle(e);
-    this.fetchTaskList();
-  }
-
-  idEquals(tl: Task, tr: Task): boolean {
-    if (tl == null || tr == null) return false;
-    return tl.id === tr.id;
-  }
-
-  setExpandedElement(row: Task) {
-    if (this.idEquals(row, this.expandedElement)) {
-      this.expandedElement = null;
-      return;
-    }
-    this.expandedElement = this.copy(row);
   }
 
   update(task: Task): void {
@@ -117,11 +97,18 @@ export class ManageTasksComponent implements OnInit {
       .subscribe({
         complete: () => {
           this.notifi.toast("Task triggered");
+          this.expandedElement = null;
         },
       });
   }
 
   viewHistory(task: Task): void {
     this.navi.navigateTo(NavType.TASK_HISTORY, [{ taskId: task.id }]);
+  }
+
+  onPagingControllerReady(pc) {
+    this.pagingController = pc;
+    this.pagingController.onPageChanged = () => this.fetchTaskList();
+    this.fetchTaskList();
   }
 }

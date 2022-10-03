@@ -32,7 +32,7 @@
 <div>
     <mat-form-field appearance="fill" style="width: 100%;" class="mb-1 mt-3">
         <mat-label>Token Name:</mat-label>
-        <input matInput type="text" [(ngModel)]="query.name">
+        <input matInput type="text" [(ngModel)]="query.name" (keyup)="isEnter($event) && fetchList()">
         <button *ngIf="query.name" matSuffix aria-label="Clear" (click)="query.name=''" class="btn-close">
         </button>
     </mat-form-field>
@@ -89,7 +89,7 @@
 
         <tr mat-header-row *matHeaderRowDef="columns"></tr>
         <tr mat-row *matRowDef="let row; columns: columns;" class="element-row"
-            [class.expanded-row]="idEquals(row, expandedElement)" (click)="setExpandedElement(row)"
+            [class.expanded-row]="idEquals(row, expandedElement)" (click)="expandedElement = getExpandedEle(row)"
             matTooltip="Click to expand"></tr>
 
         <tr mat-row *matRowDef="let element; columns: ['expandedElement'];" class="detail-row">
@@ -97,9 +97,6 @@
 
     </table>
 
-    <mat-paginator #paginator [length]="pagingController.paging.total" [pageSize]="pagingController.paging.limit"
-        [pageSizeOptions]="pagingController.PAGE_LIMIT_OPTIONS">
-    </mat-paginator>
-
+    <app-controlled-paginator (controllerReady)="onPagingControllerReady($event)"></app-controlled-paginator>
 
 </div>

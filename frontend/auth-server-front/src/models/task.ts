@@ -142,10 +142,10 @@ export interface ListTaskHistoryReqVo {
   jobName: string;
 
   /** start time */
-  startTime: number;
+  startTime: string;
 
   /** end time */
-  endTime: number;
+  endTime: string;
 
   /** task triggered by */
   runBy: string;
