@@ -17,7 +17,8 @@ export class AccessLogComponent implements OnInit {
     "user",
     "accessTime",
     "ipAddress",
-    "url",
+    "userAgent",
+    "url"
   ];
   accessLogList: AccessLog[] = [];
   pagingController: PagingController;

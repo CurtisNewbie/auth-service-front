@@ -18,6 +18,8 @@ export interface AccessLog {
 
   /** url */
   url: string;
+
+  userAgent: string;
 }
 
 export interface FetchAccessLogList {
