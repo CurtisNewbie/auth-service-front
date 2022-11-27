@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { AccessLog, FetchAccessLogList } from "src/models/access-log";
+import { AccessLog } from "src/models/access-log";
 import { PagingController } from "src/models/paging";
 import { UserService } from "../user.service";
 import { HClient } from "../util/api-util";
@@ -33,14 +33,20 @@ export class AccessLogComponent implements OnInit {
    * Fetch access log list
    */
   fetchAccessLogList(): void {
-    this.http.post<FetchAccessLogList>(
+    this.http.post<any>(
       environment.authServicePath, "/access/history",
       {
         pagingVo: this.pagingController.paging,
       }
     ).subscribe({
       next: (resp) => {
-        this.accessLogList = resp.data.payload;
+        this.accessLogList = []; 
+        if (resp.data.payload) {
+          for (let r of resp.data.payload) {
+              if (r.accessTime) r.accessTime = new Date(r.accessTime);
+              this.accessLogList.push(r);
+          }
+        }
         this.pagingController.onTotalChanged(resp.data.pagingVo);
       },
       error: (err) => {

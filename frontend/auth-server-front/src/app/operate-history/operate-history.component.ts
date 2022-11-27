@@ -33,12 +33,18 @@ export class OperateHistoryComponent implements OnInit {
   }
 
   fetchOperateLogList(): void {
-    this.http.post<FetchOperateLogListResp>(
+    this.http.post<any>(
       environment.authServicePath, "/operate/history",
       this.pagingController.paging
     ).subscribe({
       next: (resp) => {
-        this.operateLogList = resp.data.operateLogVoList;
+        this.operateLogList = [];
+        if (resp.data.operateLogVoList) {
+            for (let r of resp.data.operateLogVoList) {
+                if (r.operateTime) r.operateTime = new Date(r.operateTime);
+                this.operateLogList.push(r);
+            }
+        }
         this.pagingController.onTotalChanged(resp.data.pagingVo);
       },
     });

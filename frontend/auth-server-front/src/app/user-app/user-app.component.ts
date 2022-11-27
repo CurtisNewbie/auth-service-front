@@ -35,7 +35,14 @@ export class UserAppComponent implements OnInit {
       .listAllApps({ pagingVo: this.pagingController.paging })
       .subscribe({
         next: (resp) => {
-          this.apps = resp.data.payload;
+          this.apps = [];
+          if (resp.data.payload) {
+            for (let r of resp.data.payload) {
+              if (r.createTime) r.createTime = new Date(r.createTime);
+              if (r.updateTime) r.updateTime = new Date(r.updateTime);
+              this.apps.push(r);
+            }
+          }
           this.pagingController.onTotalChanged(resp.data.pagingVo);
         },
       });

@@ -26,10 +26,13 @@ export class UserDetailComponent implements OnInit {
 
   ngOnInit() {
     this.userService.fetchUserInfo();
-    this.http.get<UserDetail>(
+    this.http.get<any>(
       environment.authServicePath, "/user/detail",
     ).subscribe({
       next: (resp) => {
+        if (resp.data) {
+          if (resp.data.registerDate) resp.data.registerDate = new Date(resp.data.registerDate);
+        }
         this.userDetail = resp.data;
       },
     });

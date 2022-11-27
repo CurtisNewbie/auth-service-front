@@ -8,7 +8,7 @@ export interface OperateLog {
   operateDesc: string;
 
   /** when the operation happens */
-  operateTime: string;
+  operateTime: Date;
 
   /** parameters used for the operation */
   operateParam: string;

@@ -90,12 +90,19 @@ export class ManagerUserComponent implements OnInit {
 
   fetchUserInfoList(): void {
     this.searchParam.pagingVo = this.pagingController.paging;
-    this.http.post<FetchUserInfoResp>(
+    this.http.post<any>(
       environment.authServicePath, "/user/list",
       this.searchParam,
     ).subscribe({
       next: (resp) => {
-        this.userInfoList = resp.data.list;
+        this.userInfoList = [];
+        if (resp.data.list) {
+          for (let r of resp.data.list) {
+            if (r.createTime) r.createTime = new Date(r.createTime);
+            if (r.updateTime) r.updateTime = new Date(r.updateTime);
+            this.userInfoList.push(r);    
+          }
+        }
         this.pagingController.onTotalChanged(resp.data.pagingVo);
       },
     });

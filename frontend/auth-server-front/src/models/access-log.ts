@@ -5,7 +5,7 @@ export interface AccessLog {
   id: number;
 
   /** when the user signed in */
-  accessTime: string;
+  accessTime: Date;
 
   /** ip address */
   ipAddress: string;

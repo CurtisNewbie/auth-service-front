@@ -1,8 +1,7 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { UserToken } from "src/models/tokens";
-import { PagingController, Paging } from "src/models/paging";
+import { PagingController } from "src/models/paging";
 import { HClient } from "../util/api-util";
-import { MatPaginator } from "@angular/material/paginator";
 import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/animate-util";
 import { UserService } from "../user.service";
 import { NotificationService } from "../notification.service";
@@ -49,7 +48,7 @@ export class ManageKeysComponent implements OnInit {
 
   fetchList() {
     this.http
-      .post<{ pagingVo: Paging; payload: UserToken[] }>(
+      .post<any>(
         environment.authServicePath, "/user/key/list",
         {
           payload: { name: this.query.name },
@@ -58,7 +57,14 @@ export class ManageKeysComponent implements OnInit {
       )
       .subscribe((resp) => {
         if (resp.data) {
-          this.tokens = resp.data.payload;
+          this.tokens = [];
+          if (resp.data.payload) {
+            for (let r of resp.data.payload) {
+              if (r.expirationTime) r.expirationTime = new Date(r.expirationTime);
+              if (r.createTime) r.createTime = new Date(r.createTime);
+              this.tokens.push(r);
+            }
+          }
           this.pagingController.onTotalChanged(resp.data.pagingVo);
           if (this.panelDisplayed) this.panelDisplayed = false;
         }

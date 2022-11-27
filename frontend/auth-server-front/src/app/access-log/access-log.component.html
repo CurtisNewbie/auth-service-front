@@ -25,7 +25,7 @@
 
         <ng-container matColumnDef="accessTime">
             <th mat-header-cell *matHeaderCellDef> Access time </th>
-            <td mat-cell *matCellDef="let a"> {{a.accessTime}} </td>
+            <td mat-cell *matCellDef="let a"> {{a.accessTime | date: 'yyyy-MM-dd HH:mm:ss'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="ipAddress">

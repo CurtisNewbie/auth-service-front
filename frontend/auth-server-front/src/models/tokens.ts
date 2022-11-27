@@ -9,9 +9,9 @@ export interface UserToken {
     name: string;
 
     /** when the key is expired */
-    expirationTime: string;
+    expirationTime: Date;
 
     /** when the record is created */
-    createTime: string;
+    createTime: Date;
 
 } 

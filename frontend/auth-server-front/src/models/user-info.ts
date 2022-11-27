@@ -18,10 +18,10 @@ export interface UserInfo {
   reviewStatus: string;
 
   /** when the user is created */
-  createTime: string;
+  createTime: Date;
 
   /** when the user is updated */
-  updateTime: string;
+  updateTime: Date;
 
   /** who updated this user */
   updateBy: string;
