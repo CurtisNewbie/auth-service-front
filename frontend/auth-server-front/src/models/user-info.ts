@@ -2,14 +2,9 @@ import { Paging } from "./paging";
 import { Option } from "./select-util";
 
 export interface UserInfo {
-  /** id */
   id: number;
-
-  /** username */
   username: string;
-
-  /** role */
-  role: string;
+  role: string; // deprecated
 
   /** whether the user is disabled, 0-normal, 1-disabled */
   isDisabled: number;
@@ -17,16 +12,12 @@ export interface UserInfo {
   /** review status */
   reviewStatus: string;
 
-  /** when the user is created */
+  roleNo: string;
+  userNo: string;
+  roleName: string;
   createTime: Date;
-
-  /** when the user is updated */
   updateTime: Date;
-
-  /** who updated this user */
   updateBy: string;
-
-  /** who created this user */
   createBy: string;
 }
 

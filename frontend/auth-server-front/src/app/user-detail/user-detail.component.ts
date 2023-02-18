@@ -7,7 +7,10 @@ import { HClient } from "../util/api-util";
 export interface UserDetail {
   id?: string;
   username?: string;
-  role?: string;
+  userNo?: string;
+  role?: string; // deprecated
+  roleNo?: string;
+  roleName?: string;
   registerDate?: string;
 }
 

@@ -1,4 +1,4 @@
-# auth-service-front v1.1.6
+# auth-service-front v1.1.7
 
 Angular Frontend for Auth Service 
 
@@ -6,5 +6,6 @@ Compatible with:
 
 **Requirements:**
 
-- auth-service >= [v1.1.4.5](https://github.com/CurtisNewbie/auth-service/tree/v1.1.4.5)
-- auth-gateway >= [v1.0.10](https://github.com/CurtisNewbie/auth-gateway/tree/v1.0.10) (no direct dependency, but of course you will need it)
+- goauth >= [v1.0.0](https://github.com/CurtisNewbie/goauth/tree/v1.0.0)
+- auth-service >= [v1.1.6](https://github.com/CurtisNewbie/auth-service/tree/v1.1.6)
+- auth-gateway >= [v1.1.1](https://github.com/CurtisNewbie/auth-gateway/tree/v1.1.1) (no direct dependency, but of course you will need it)
