@@ -16,6 +16,11 @@ import { Resp } from "src/models/resp";
 import { timer } from "rxjs";
 import { environment } from "src/environments/environment";
 
+export interface RoleBrief {
+  roleNo?: string
+  name?: string
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -93,6 +98,10 @@ export class UserService implements OnDestroy {
       environment.authServicePath, "/user/register/request",
       { username, password },
     );
+  }
+
+  public fetchRoleBriefs(): Observable<Resp<any>> {
+    return this.http.get<any>(environment.goauthPath, "/role/brief/all");
   }
 
   /**

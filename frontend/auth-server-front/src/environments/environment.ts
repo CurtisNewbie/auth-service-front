@@ -6,6 +6,7 @@ export const environment = {
   production: false,
   authServicePath: "auth-service",
   taskServicePath: "dtaskgo",
+  goauthPath: "goauth",
 };
 
 /*

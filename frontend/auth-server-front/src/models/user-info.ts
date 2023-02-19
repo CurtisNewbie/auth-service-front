@@ -38,17 +38,6 @@ export enum UserIsDisabledEnum {
   IS_DISABLED = 1,
 }
 
-export enum UserRoleEnum {
-  /** Administrator */
-  ADMIN = "admin",
-
-  /** Normal user */
-  USER = "user",
-
-  /** Guest */
-  GUEST = "guest",
-}
-
 export interface UserIsDisabledOption {
   name: string;
   value: number;
@@ -57,12 +46,6 @@ export interface UserIsDisabledOption {
 export const USER_IS_DISABLED_OPTIONS: UserIsDisabledOption[] = [
   { name: "normal", value: UserIsDisabledEnum.NORMAL },
   { name: "disabled", value: UserIsDisabledEnum.IS_DISABLED },
-];
-
-export const USER_ROLE_OPTIONS: Option<UserRoleEnum>[] = [
-  { name: "Admin", value: UserRoleEnum.ADMIN },
-  { name: "User", value: UserRoleEnum.USER },
-  { name: "Guest", value: UserRoleEnum.GUEST },
 ];
 
 /**
@@ -120,11 +103,6 @@ export interface FetchUserInfoParam {
   username: string;
 
   /**
-   * role
-   */
-  role: UserRoleEnum | string;
-
-  /**
    * is user disabled
    */
   isDisabled: UserIsDisabledEnum | number;
@@ -138,7 +116,6 @@ export interface FetchUserInfoParam {
 export function emptyFetchUserInfoParam(): FetchUserInfoParam {
   return {
     username: null,
-    role: null,
     isDisabled: null,
     pagingVo: null,
   };

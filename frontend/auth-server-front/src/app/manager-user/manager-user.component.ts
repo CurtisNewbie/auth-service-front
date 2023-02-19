@@ -6,16 +6,14 @@ import { PagingController } from "src/models/paging";
 import {
   emptyFetchUserInfoParam,
   FetchUserInfoParam,
-  FetchUserInfoResp,
   UserInfo,
   UserIsDisabledEnum,
-  UserRoleEnum,
   USER_IS_DISABLED_OPTIONS,
-  USER_ROLE_OPTIONS,
 } from "src/models/user-info";
 import { ConfirmDialogComponent } from "../dialog/confirm/confirm-dialog.component";
 import { NotificationService } from "../notification.service";
 import { UserPermittedAppUpdateComponent } from "../user-permitted-app-update/user-permitted-app-update.component";
+import { RoleBrief, UserService } from "../user.service";
 import { HClient } from "../util/api-util";
 import { isEnterKey } from "../util/condition";
 
@@ -40,17 +38,17 @@ export class ManagerUserComponent implements OnInit {
     "updateTime",
   ];
   readonly USER_IS_DISABLED_OPTS = USER_IS_DISABLED_OPTIONS;
-  readonly USER_ROLE_OPTS = USER_ROLE_OPTIONS;
 
   usernameToBeAdded: string = null;
   passswordToBeAdded: string = null;
-  userRoleOfAddedUser: string = UserRoleEnum.GUEST;
+  userRoleOfAddedUser: string = null;
   userInfoList: UserInfo[] = [];
   addUserPanelDisplayed: boolean = false;
   expandedElement: UserInfo = null;
   searchParam: FetchUserInfoParam = emptyFetchUserInfoParam();
   pagingController: PagingController;
   expandedIsDisabled: boolean = false;
+  roleBriefs: RoleBrief[] = [];
 
   idEquals = isIdEqual;
   getExpandedEle = (row) => getExpanded(row, this.expandedElement);
@@ -59,10 +57,12 @@ export class ManagerUserComponent implements OnInit {
   constructor(
     private notifi: NotificationService,
     private dialog: MatDialog,
-    private http: HClient
+    private http: HClient,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
+    this.fetchRoleBriefs();
   }
 
   /**
@@ -76,16 +76,27 @@ export class ManagerUserComponent implements OnInit {
 
     this.http.post<any>(
       environment.authServicePath, "/user/add",
-      { username: this.usernameToBeAdded, password: this.passswordToBeAdded, userRole: this.userRoleOfAddedUser },
+      { username: this.usernameToBeAdded, password: this.passswordToBeAdded, roleNo: this.userRoleOfAddedUser },
     ).subscribe({
       complete: () => {
-        this.userRoleOfAddedUser = UserRoleEnum.GUEST;
+        this.userRoleOfAddedUser = null;
         this.usernameToBeAdded = null;
         this.passswordToBeAdded = null;
         this.addUserPanelDisplayed = false;
         this.fetchUserInfoList();
       },
     });
+  }
+
+  fetchRoleBriefs(): void {
+    this.userService.fetchRoleBriefs().subscribe({
+      next: (dat) => {
+        this.roleBriefs = [];
+        if (dat.data) {
+          this.roleBriefs = dat.data;
+        }
+      }
+    })
   }
 
   fetchUserInfoList(): void {
@@ -100,7 +111,7 @@ export class ManagerUserComponent implements OnInit {
           for (let r of resp.data.list) {
             if (r.createTime) r.createTime = new Date(r.createTime);
             if (r.updateTime) r.updateTime = new Date(r.updateTime);
-            this.userInfoList.push(r);    
+            this.userInfoList.push(r);
           }
         }
         this.pagingController.onTotalChanged(resp.data.pagingVo);
@@ -110,7 +121,6 @@ export class ManagerUserComponent implements OnInit {
 
   resetSearchParam(): void {
     this.searchParam.isDisabled = null;
-    this.searchParam.role = null;
     this.pagingController.firstPage();
   }
 
@@ -122,7 +132,7 @@ export class ManagerUserComponent implements OnInit {
       environment.authServicePath, "/user/info/update",
       {
         id: this.expandedElement.id,
-        role: this.expandedElement.role,
+        roleNo: this.expandedElement.roleNo,
         isDisabled: this.expandedElement.isDisabled,
       },
     ).subscribe({
