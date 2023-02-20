@@ -53,10 +53,6 @@ const routes: Routes = [
     path: "register",
     component: RegisterComponent,
   },
-  {
-    path: "user-app",
-    component: UserAppComponent,
-  },
   { path: "**", redirectTo: "/login-page" },
 ];
 

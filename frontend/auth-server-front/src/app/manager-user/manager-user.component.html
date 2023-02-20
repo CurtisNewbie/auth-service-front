@@ -48,18 +48,17 @@
         </button>
     </mat-form-field>
     <div class="row row-cols-lg-auto g-3 align-items-center">
-        <!-- TODO -->
-        <!-- <div class="col-12">
+        <div class="col-12">
             <mat-form-field appearance="fill">
                 <mat-label>Role</mat-label>
-                <mat-select [(value)]="searchParam.role">
+                <mat-select [(value)]="searchParam.roleNo">
                     <mat-option value="">ALL</mat-option>
-                    <mat-option [value]="option.value" *ngFor="let option of USER_ROLE_OPTS">
+                    <mat-option [value]="option.roleNo" *ngFor="let option of roleBriefs">
                         {{option.name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-        </div> -->
+        </div>
 
         <div class="col-12">
             <mat-form-field appearance="fill">
@@ -98,8 +97,7 @@
         </ng-container>
         <ng-container matColumnDef="role">
             <th mat-header-cell *matHeaderCellDef> Role </th>
-            <!-- TODO -->
-            <td mat-cell *matCellDef="let u"> {{u.role}} </td>
+            <td mat-cell *matCellDef="let u"> {{u.roleName}} </td>
         </ng-container>
         <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef> Status </th>
@@ -144,17 +142,17 @@
                 <div class="element-detail" [@detailExpand]="idEquals(u, expandedElement) ? 'expanded' : 'collapsed'">
                     <ng-container *ngIf="expandedElement != null">
                         <div class="row row-cols-lg-auto g-3 align-items-center">
-                            <!-- TODO -->
-                            <!-- <div class="col-12">
+                            <div class="col-12">
                                 <mat-form-field appearance="fill">
                                     <mat-label>Role</mat-label>
-                                    <mat-select [(value)]="expandedElement.role">
-                                        <mat-option [value]="option.value" *ngFor="let option of USER_ROLE_OPTS">
+                                    <mat-select [(value)]="expandedElement.roleNo">
+                                        <mat-option value="">None</mat-option>
+                                        <mat-option [value]="option.roleNo" *ngFor="let option of roleBriefs">
                                             {{option.name}}
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                            </div> -->
+                            </div>
 
                             <div class="col-12">
                                 <mat-form-field appearance="fill">
@@ -171,8 +169,6 @@
                                 <button mat-raised-button class="m-2" (click)="updateUserInfo()">Update</button>
                                 <button mat-raised-button class="m-2" *ngIf="expandedIsDisabled"
                                     (click)="deleteUser()">Delete</button>
-                                <button mat-raised-button class="m-2" (click)="openDialogForUserApp()">Permitted
-                                    Apps</button>
                             </div>
 
                             <div *ngIf="expandedElement.reviewStatus == 'PENDING'" class="col-12">

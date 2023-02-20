@@ -99,26 +99,10 @@ export function emptyChangePasswordParam(): ChangePasswordParam {
  * Parameters for fetching user info
  */
 export interface FetchUserInfoParam {
-  /** username  */
-  username: string;
-
-  /**
-   * is user disabled
-   */
-  isDisabled: UserIsDisabledEnum | number;
-
-  /**
-   * paging param
-   */
-  pagingVo: Paging;
-}
-
-export function emptyFetchUserInfoParam(): FetchUserInfoParam {
-  return {
-    username: null,
-    isDisabled: null,
-    pagingVo: null,
-  };
+  username?: string;
+  isDisabled?: UserIsDisabledEnum | number;
+  roleNo?: string;
+  pagingVo?: Paging;
 }
 
 export interface UpdateUserInfoParam {

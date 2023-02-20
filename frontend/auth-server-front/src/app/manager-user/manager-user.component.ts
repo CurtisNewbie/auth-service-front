@@ -4,7 +4,6 @@ import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/ani
 import { environment } from "src/environments/environment";
 import { PagingController } from "src/models/paging";
 import {
-  emptyFetchUserInfoParam,
   FetchUserInfoParam,
   UserInfo,
   UserIsDisabledEnum,
@@ -45,7 +44,7 @@ export class ManagerUserComponent implements OnInit {
   userInfoList: UserInfo[] = [];
   addUserPanelDisplayed: boolean = false;
   expandedElement: UserInfo = null;
-  searchParam: FetchUserInfoParam = emptyFetchUserInfoParam();
+  searchParam: FetchUserInfoParam = {};
   pagingController: PagingController;
   expandedIsDisabled: boolean = false;
   roleBriefs: RoleBrief[] = [];
@@ -107,8 +106,8 @@ export class ManagerUserComponent implements OnInit {
     ).subscribe({
       next: (resp) => {
         this.userInfoList = [];
-        if (resp.data.list) {
-          for (let r of resp.data.list) {
+        if (resp.data.payload) {
+          for (let r of resp.data.payload) {
             if (r.createTime) r.createTime = new Date(r.createTime);
             if (r.updateTime) r.updateTime = new Date(r.updateTime);
             this.userInfoList.push(r);
@@ -120,7 +119,7 @@ export class ManagerUserComponent implements OnInit {
   }
 
   resetSearchParam(): void {
-    this.searchParam.isDisabled = null;
+    this.searchParam = {}
     this.pagingController.firstPage();
   }
 
@@ -177,17 +176,17 @@ export class ManagerUserComponent implements OnInit {
   /**
    * Open dialog to show permitted apps for user
    */
-  openDialogForUserApp(): void {
-    const dialogRef: MatDialogRef<UserPermittedAppUpdateComponent, void> =
-      this.dialog.open(UserPermittedAppUpdateComponent, {
-        width: "900px",
-        data: {
-          userId: this.expandedElement.id,
-        },
-      });
+  // openDialogForUserApp(): void {
+  //   const dialogRef: MatDialogRef<UserPermittedAppUpdateComponent, void> =
+  //     this.dialog.open(UserPermittedAppUpdateComponent, {
+  //       width: "900px",
+  //       data: {
+  //         userId: this.expandedElement.id,
+  //       },
+  //     });
 
-    dialogRef.afterClosed().subscribe();
-  }
+  //   dialogRef.afterClosed().subscribe();
+  // }
 
   reviewRegistration(userId: number, reviewStatus: string) {
     this.http.post<void>(
