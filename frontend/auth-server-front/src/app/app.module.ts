@@ -43,6 +43,7 @@ import { MatMenuModule } from "@angular/material/menu";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
 import { ControlledPaginatorComponent } from "./controlled-paginator/controlled-paginator.component";
+import { ManageRoleComponent } from './manage-role/manage-role.component';
 
 @NgModule({
   exports: [],
@@ -62,7 +63,8 @@ import { ControlledPaginatorComponent } from "./controlled-paginator/controlled-
     UserPermittedAppUpdateComponent,
     UserDetailComponent,
     ManageKeysComponent,
-    ControlledPaginatorComponent
+    ControlledPaginatorComponent,
+    ManageRoleComponent
   ],
   imports: [
     MatCardModule,

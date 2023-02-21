@@ -11,6 +11,7 @@ import { RegisterComponent } from "./register/register.component";
 import { TaskHistoryComponent } from "./task-history/task-history.component";
 import { UserAppComponent } from "./user-app/user-app.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
+import { ManageRoleComponent } from "./manage-role/manage-role.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
   {
     path: "user-details",
     component: UserDetailComponent,
+  },
+  {
+    path: "manage-roles",
+    component: ManageRoleComponent,
   },
   {
     path: "manage-user",
@@ -60,4 +65,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

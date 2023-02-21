@@ -5,12 +5,14 @@
         <button mat-menu-item routerLink="/user-details" routerLinkActive="active">User Details</button>
         <!-- TODO change to resource based ngIf -->
         <!-- <ng-container *ngIf="isAdmin"> -->
+        <!-- </ng-container> -->
+
         <button mat-menu-item routerLink="/manage-user" routerLinkActive="active">Manager Users</button>
+        <button mat-menu-item routerLink="/manage-roles" routerLinkActive="active">Manage Roles</button>
         <button mat-menu-item routerLink="/access-log" routerLinkActive="active">Access History</button>
         <button mat-menu-item routerLink="/operate-history" routerLinkActive="active">Operate History</button>
         <button mat-menu-item routerLink="/manage-task" routerLinkActive="active">Manage Tasks</button>
         <button mat-menu-item routerLink="/task-history" routerLinkActive="active">Task History</button>
-        <!-- </ng-container> -->
         <ng-container>
             <button mat-menu-item routerLink="/manage-keys" routerLinkActive="active">Manage Keys</button>
         </ng-container>

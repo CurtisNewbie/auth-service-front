@@ -12,6 +12,7 @@ export interface AppSelect {
   isSelected: boolean;
 }
 
+// TODO deprecated, may be removed in the future
 @Component({
   selector: "app-user-permitted-app-update",
   templateUrl: "./user-permitted-app-update.component.html",
