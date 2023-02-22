@@ -12,6 +12,8 @@ import { TaskHistoryComponent } from "./task-history/task-history.component";
 import { UserAppComponent } from "./user-app/user-app.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { ManageRoleComponent } from "./manage-role/manage-role.component";
+import { ManagePathsComponent } from "./manage-paths/manage-paths.component";
+import { ManageResourcesComponent } from "./manage-resources/manage-resources.component";
 
 const routes: Routes = [
   {
@@ -57,6 +59,14 @@ const routes: Routes = [
   {
     path: "register",
     component: RegisterComponent,
+  },
+  {
+    path: "manage-paths",
+    component: ManagePathsComponent,
+  },
+  {
+    path: "manage-resources",
+    component: ManageResourcesComponent,
   },
   { path: "**", redirectTo: "/login-page" },
 ];

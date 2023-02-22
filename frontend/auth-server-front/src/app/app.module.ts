@@ -44,6 +44,8 @@ import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { ManageKeysComponent } from "./manage-keys/manage-keys.component";
 import { ControlledPaginatorComponent } from "./controlled-paginator/controlled-paginator.component";
 import { ManageRoleComponent } from './manage-role/manage-role.component';
+import { ManageResourcesComponent } from './manage-resources/manage-resources.component';
+import { ManagePathsComponent } from './manage-paths/manage-paths.component';
 
 @NgModule({
   exports: [],
@@ -64,7 +66,9 @@ import { ManageRoleComponent } from './manage-role/manage-role.component';
     UserDetailComponent,
     ManageKeysComponent,
     ControlledPaginatorComponent,
-    ManageRoleComponent
+    ManageRoleComponent,
+    ManageResourcesComponent,
+    ManagePathsComponent
   ],
   imports: [
     MatCardModule,
