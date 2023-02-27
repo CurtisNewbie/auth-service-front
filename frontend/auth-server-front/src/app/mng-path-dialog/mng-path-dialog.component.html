@@ -1,0 +1,21 @@
+<h1 mat-dialog-title>Mange Path Detail</h1>
+<div mat-dialog-content>
+    <p>Path: {{dat.pathNo}}</p>
+    <p>URL: '{{dat.url}}'</p>
+    <p>Resource Bounded: {{dat.resName}}</p>
+
+    <mat-form-field appearance="fill" *ngIf="!dat.resNo">
+        <mat-label>Bind to Resource</mat-label>
+        <mat-select [(value)]="bindToResNo">
+            <mat-option [value]="option.resNo" *ngFor="let option of resBrief">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    <div class="d-flex justify-content-md-end">
+        <button mat-raised-button class="m-2" (click)="bind()" *ngIf="!dat.resNo">Bind Resource</button>
+        <button mat-raised-button class="m-2" (click)="unbind()" *ngIf="dat.resNo">Unbind Resource</button>
+    </div>
+</div>

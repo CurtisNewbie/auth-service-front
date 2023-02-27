@@ -60,7 +60,7 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="tabcol"></tr>
-        <tr mat-row *matRowDef="let row; columns: tabcol;"></tr>
+        <tr mat-row *matRowDef="let row; columns: tabcol;" (click)="openMngPathDialog(row)"></tr>
     </table>
 
     <app-controlled-paginator (controllerReady)="onPagingControllerReady($event)"></app-controlled-paginator>

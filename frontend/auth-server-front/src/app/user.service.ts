@@ -21,6 +21,11 @@ export interface RoleBrief {
   name?: string
 }
 
+export interface ResBrief {
+  resNo?: string
+  name?: string
+}
+
 @Injectable({
   providedIn: "root",
 })
@@ -102,6 +107,10 @@ export class UserService implements OnDestroy {
 
   public fetchRoleBriefs(): Observable<Resp<any>> {
     return this.http.get<any>(environment.goauthPath, "/role/brief/all");
+  }
+
+  public fetchResBrief(): Observable<Resp<any>> {
+    return this.http.get<any>(environment.goauthPath, "/resource/brief/all");
   }
 
   /**
