@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { getExpanded, isIdEqual } from 'src/animate/animate-util';
 import { environment } from 'src/environments/environment';
 import { PagingController } from 'src/models/paging';
+import { NotificationService } from '../notification.service';
 import { UserService } from '../user.service';
 import { HClient } from '../util/api-util';
 import { isEnterKey } from '../util/condition';
@@ -22,6 +23,8 @@ export interface WRes {
   styleUrls: ['./manage-resources.component.css']
 })
 export class ManageResourcesComponent implements OnInit {
+  newResDialog = false;
+  newResName = "";
 
   expandedElement: WRes = null;
   pagingController: PagingController;
@@ -33,7 +36,7 @@ export class ManageResourcesComponent implements OnInit {
   getExpandedEle = (row) => getExpanded(row, this.expandedElement);
   isEnter = isEnterKey;
 
-  constructor(private hclient: HClient, private userService: UserService) { }
+  constructor(private hclient: HClient, private userService: UserService, private toaster: NotificationService) { }
 
   reset() {
     this.expandedElement = null;
@@ -66,6 +69,23 @@ export class ManageResourcesComponent implements OnInit {
     this.pagingController = pc;
     this.pagingController.onPageChanged = () => this.fetchList();
     this.fetchList();
+  }
+
+  createNewRes() {
+    if (!this.newResName) {
+      this.toaster.toast("Please enter new resource name");
+      return;
+    }
+
+    this.hclient.post(environment.goauthPath, "/resource/add", {
+      name: this.newResName
+    }).subscribe({
+      next: (r) => {
+        this.newResDialog = false;
+        this.newResName = "";
+        this.fetchList();
+      }
+    });
   }
 
 }

@@ -22,11 +22,7 @@ export class UserPermittedAppUpdateComponent implements OnInit {
   apps = new Map<number, AppSelect>();
 
   constructor(
-    public dialogRef: MatDialogRef<
-      UserPermittedAppUpdateComponent,
-      UserAppDialogData
-    >,
-    @Inject(MAT_DIALOG_DATA) public data: UserAppDialogData,
+    public dialogRef: MatDialogRef< UserPermittedAppUpdateComponent, UserAppDialogData >, @Inject(MAT_DIALOG_DATA) public data: UserAppDialogData,
     private appService: AppService,
     private notifi: NotificationService
   ) { }

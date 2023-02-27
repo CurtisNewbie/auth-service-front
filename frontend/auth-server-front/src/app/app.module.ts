@@ -46,6 +46,7 @@ import { ControlledPaginatorComponent } from "./controlled-paginator/controlled-
 import { ManageRoleComponent } from './manage-role/manage-role.component';
 import { ManageResourcesComponent } from './manage-resources/manage-resources.component';
 import { ManagePathsComponent } from './manage-paths/manage-paths.component';
+import { MngResDialogComponent } from './mng-res-dialog/mng-res-dialog.component';
 
 @NgModule({
   exports: [],
@@ -68,7 +69,8 @@ import { ManagePathsComponent } from './manage-paths/manage-paths.component';
     ControlledPaginatorComponent,
     ManageRoleComponent,
     ManageResourcesComponent,
-    ManagePathsComponent
+    ManagePathsComponent,
+    MngResDialogComponent
   ],
   imports: [
     MatCardModule,
