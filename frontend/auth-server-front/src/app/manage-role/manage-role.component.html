@@ -49,30 +49,8 @@
             <td mat-cell *matCellDef="let u"> {{u.updateTime | date: 'yyyy-MM-dd HH:mm:ss'}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="expandedElement">
-            <td mat-cell *matCellDef="let u" [attr.colspan]="tabcol.length">
-                <div class="element-detail" [@detailExpand]="idEquals(u, expandedElement) ? 'expanded' : 'collapsed'">
-
-                    <!-- TODO -->
-                    <ng-container *ngIf="expandedElement">
-                        <div class="row row-cols-lg-auto g-3 align-items-center">
-                            <div class="col-12">
-                            </div>
-                            <div class="col-12">
-                            </div>
-                        </div>
-                    </ng-container>
-                </div>
-            </td>
-        </ng-container>
-
         <tr mat-header-row *matHeaderRowDef="tabcol"></tr>
-        <tr mat-row *matRowDef="let row; columns: tabcol;" class="element-row"
-            [class.expanded-row]="idEquals(row, expandedElement)" (click)="expandedElement = getExpandedEle(row)"
-            matTooltip="Click to expand"></tr>
-
-        <tr mat-row *matRowDef="let element; columns: ['expandedElement'];" class="detail-row">
-        </tr>
+        <tr mat-row *matRowDef="let row; columns: tabcol;"></tr>
     </table>
 
     <app-controlled-paginator (controllerReady)="onPagingControllerReady($event)"></app-controlled-paginator>

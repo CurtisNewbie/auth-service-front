@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { animateElementExpanding, getExpanded, isIdEqual } from 'src/animate/animate-util';
+import { animateElementExpanding } from 'src/animate/animate-util';
 import { environment } from 'src/environments/environment';
 import { PagingController } from 'src/models/paging';
 import { UserService } from '../user.service';
@@ -25,20 +25,16 @@ export interface ERole {
 })
 export class ManageRoleComponent implements OnInit {
 
-  expandedElement: ERole = null;
   pagingController: PagingController;
 
   readonly tabcol = ["id", "name", "roleNo", "createBy", "createTime", "updateBy", "updateTime"];
   roles: ERole[] = [];
 
-  idEquals = isIdEqual;
-  getExpandedEle = (row) => getExpanded(row, this.expandedElement);
   isEnter = isEnterKey;
 
   constructor(private hclient: HClient, private userService: UserService) { }
 
   reset() {
-    this.expandedElement = null;
     this.pagingController.firstPage();
   }
 
