@@ -1,6 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { env } from 'process';
 import { environment } from 'src/environments/environment';
 import { MngResDialogComponent } from '../mng-res-dialog/mng-res-dialog.component';
 import { NotificationService } from '../notification.service';
@@ -11,7 +10,9 @@ export interface DialogDat {
   url: string,
   pathNo: string,
   resName: string,
-  resNo: string
+  resNo: string,
+  ptype: string
+  group: string
 }
 
 @Component({
@@ -23,6 +24,10 @@ export class MngPathDialogComponent implements OnInit {
 
   resBrief: ResBrief[] = [];
   bindToResNo = "";
+  PATH_TYPES = [
+    { val: 'PROTECTED', name: 'Protected' },
+    { val: 'PUBLIC', name: "Public" }
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<MngResDialogComponent, DialogDat>, @Inject(MAT_DIALOG_DATA) public dat: DialogDat,
@@ -35,6 +40,18 @@ export class MngPathDialogComponent implements OnInit {
     this._fetchRoleBriefs();
   }
 
+  update() {
+    this.hclient.post(environment.goauthPath, "/path/update", {
+      type: this.dat.ptype,
+      pathNo: this.dat.pathNo,
+      group: this.dat.group
+    }).subscribe({
+      complete: () => {
+        this.dialogRef.close();
+      }
+    });
+  }
+
   unbind() {
     this.hclient.post(environment.goauthPath, "/path/resource/unbind", {
       pathNo: this.dat.pathNo,
@@ -43,7 +60,6 @@ export class MngPathDialogComponent implements OnInit {
         this.dialogRef.close();
       }
     });
-
   }
 
   bind() {

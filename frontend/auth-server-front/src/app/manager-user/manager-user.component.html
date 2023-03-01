@@ -12,14 +12,14 @@
 
     <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Username</mat-label>
-        <input matInput type="text" id="usernameInput" [(ngModel)]="usernameToBeAdded">
+        <input matInput type="text" [(ngModel)]="usernameToBeAdded">
         <button *ngIf="usernameToBeAdded" matSuffix aria-label="Clear" (click)="usernameToBeAdded=''" class="btn-close">
         </button>
     </mat-form-field>
 
     <mat-form-field appearance="fill" style="width: 100%;">
         <mat-label>Password</mat-label>
-        <input matInput type="password" id="passwordInput" [(ngModel)]="passswordToBeAdded">
+        <input matInput type="password" [(ngModel)]="passswordToBeAdded">
         <button *ngIf="passswordToBeAdded" matSuffix aria-label="Clear" (click)="passswordToBeAdded=''"
             class="btn-close">
         </button>
@@ -40,7 +40,7 @@
 
 <!-- search param  -->
 <div>
-    <mat-form-field appearance="fill" style="width: 100%;" class="mb-1 mt-3">
+    <mat-form-field appearance="fill" style="width: 100%;" class="mb-1 m-3">
         <mat-label>Username:</mat-label>
         <input matInput type="text" [(ngModel)]="searchParam.username" (keyup)="isEnter($event) && fetchUserInfoList()">
         <button *ngIf="searchParam.username" matSuffix aria-label="Clear" (click)="searchParam.username=''"
@@ -75,8 +75,8 @@
         </div>
     </div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
-        <button mat-raised-button class="m-2" id="reloadBtn" (click)="fetchUserInfoList()">Fetch</button>
-        <button mat-raised-button class="m-2" id="resetBtn" (click)="resetSearchParam()">Reset</button>
+        <button mat-raised-button class="m-2" (click)="fetchUserInfoList()">Fetch</button>
+        <button mat-raised-button class="m-2" (click)="resetSearchParam()">Reset</button>
     </div>
 </div>
 

@@ -2,9 +2,20 @@
 <div mat-dialog-content>
     <p>Path: {{dat.pathNo}}</p>
     <p>URL: '{{dat.url}}'</p>
-    <p>Resource Bounded: {{dat.resName}}</p>
+    <p *ngIf="dat.ptype == 'PUBLIC'">Path Type: <span class="status-green">Public</span></p>
+    <p *ngIf="dat.ptype == 'PROTECTED'">Path Type: <span class="status-red">Protected</span></p>
+    <p *ngIf="dat.resNo">Resource Bounded: {{dat.resName}}</p>
 
-    <mat-form-field appearance="fill" *ngIf="!dat.resNo">
+    <mat-form-field appearance="fill" class="m-2 p-1">
+        <mat-label>New Path Type:</mat-label>
+        <mat-select [(value)]="dat.ptype">
+            <mat-option [value]="option.val" *ngFor="let option of PATH_TYPES">
+                {{option.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="!dat.resNo" class="m-2 p-1">
         <mat-label>Bind to Resource</mat-label>
         <mat-select [(value)]="bindToResNo">
             <mat-option [value]="option.resNo" *ngFor="let option of resBrief">
@@ -13,9 +24,9 @@
         </mat-select>
     </mat-form-field>
 
-
     <div class="d-flex justify-content-md-end">
         <button mat-raised-button class="m-2" (click)="bind()" *ngIf="!dat.resNo">Bind Resource</button>
         <button mat-raised-button class="m-2" (click)="unbind()" *ngIf="dat.resNo">Unbind Resource</button>
+        <button mat-raised-button class="m-2" (click)="update()">Update</button>
     </div>
 </div>

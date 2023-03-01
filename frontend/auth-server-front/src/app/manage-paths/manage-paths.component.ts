@@ -30,6 +30,14 @@ export interface WPath {
 })
 export class ManagePathsComponent implements OnInit {
 
+  searchPath = null;
+  searchGroup = null;
+  searchType = null;
+  PATH_TYPES = [
+    { val: 'PROTECTED', name: 'Protected' },
+    { val: 'PUBLIC', name: "Public" }
+  ];
+
   expandedElement: WPath = null;
   pagingController: PagingController;
 
@@ -48,6 +56,9 @@ export class ManagePathsComponent implements OnInit {
 
   reset() {
     this.expandedElement = null;
+    this.searchGroup = null;
+    this.searchPath = null;
+    this.searchType = null;
     this.pagingController.firstPage();
   }
 
@@ -62,7 +73,9 @@ export class ManagePathsComponent implements OnInit {
         url: p.url,
         pathNo: p.pathNo,
         resName: p.resName,
-        resNo: p.resNo
+        resNo: p.resNo,
+        ptype: p.ptype,
+        group: p.pgroup
       },
     }).afterClosed().subscribe({
       complete: () => {
@@ -73,7 +86,10 @@ export class ManagePathsComponent implements OnInit {
 
   fetchList() {
     this.hclient.post<any>(environment.goauthPath, '/path/list', {
-      pagingVo: this.pagingController.paging
+      pagingVo: this.pagingController.paging,
+      pgroup: this.searchGroup,
+      url: this.searchPath,
+      ptype: this.searchType
     }).subscribe({
       next: (r) => {
         this.paths = [];
