@@ -4,6 +4,7 @@ import { animateElementExpanding } from 'src/animate/animate-util';
 import { environment } from 'src/environments/environment';
 import { PagingController } from 'src/models/paging';
 import { MngRoleDialogComponent } from '../mng-role-dialog/mng-role-dialog.component';
+import { NotificationService } from '../notification.service';
 import { UserService } from '../user.service';
 import { HClient } from '../util/api-util';
 import { isEnterKey } from '../util/condition';
@@ -27,6 +28,8 @@ export interface ERole {
 })
 export class ManageRoleComponent implements OnInit {
 
+  newRoleDialog = false;
+  newRoleName = '';
   pagingController: PagingController;
 
   readonly tabcol = ["id", "name", "roleNo", "createBy", "createTime", "updateBy", "updateTime"];
@@ -38,9 +41,11 @@ export class ManageRoleComponent implements OnInit {
     private hclient: HClient,
     private userService: UserService,
     private dialog: MatDialog,
+    private toaster: NotificationService
   ) { }
 
   reset() {
+    this.newRoleDialog = false;
     this.pagingController.firstPage();
   }
 
@@ -74,12 +79,29 @@ export class ManageRoleComponent implements OnInit {
 
   openMngRoleDialog(role: ERole) {
     this.dialog.open(MngRoleDialogComponent, {
-      width: "800px",
+      width: "1000px",
       data: {
         roleNo: role.roleNo
       },
     }).afterClosed().subscribe({
       complete: () => {
+        this.fetchList();
+      }
+    });
+  }
+
+  createNewRole() {
+    if (!this.newRoleName) {
+      this.toaster.toast("Please enter new role name")
+      return;
+    }
+
+    this.hclient.post(environment.goauthPath, "/role/add", {
+      name: this.newRoleName
+    }).subscribe({
+      next: (res) => {
+        this.newRoleDialog = false;
+        this.newRoleName = null;
         this.fetchList();
       }
     });

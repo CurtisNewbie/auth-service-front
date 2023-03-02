@@ -2,9 +2,26 @@
     <h3 class="mt-2 mb-3">Manage Roles</h3>
 </div>
 
+<!-- new role -->
+<ng-container *ngIf="newRoleDialog">
+    <div class="container bootstrap p-3 mt-3 mb-5 shadow">
+        <mat-form-field appearance="fill" style="width: 100%;">
+            <mat-label>Role Name</mat-label>
+            <input matInput type="text" [(ngModel)]="newRoleName">
+            <button *ngIf="newRoleName" matSuffix aria-label="Clear" (click)="newRoleName=''" class="btn-close">
+            </button>
+        </mat-form-field>
+        <div class="justify-content-md-end d-md-flex">
+            <button mat-raised-button class="mt-2" (click)="createNewRole()">Create</button>
+        </div>
+    </div>
+</ng-container>
+
 <!-- search param  -->
 <div>
     <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+        <button mat-raised-button class="m-2" id="reloadBtn" (click)="newRoleDialog= !newRoleDialog">New
+            Role</button>
         <button mat-raised-button class="m-2" id="reloadBtn" (click)="fetchList()">Fetch</button>
         <button mat-raised-button class="m-2" id="resetBtn" (click)="reset()">Reset</button>
     </div>

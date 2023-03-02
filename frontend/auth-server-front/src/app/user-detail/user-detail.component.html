@@ -6,23 +6,17 @@
 
     <mat-card>
         <mat-card-header>
-            <mat-card-title class="m-4">{{userDetail.username}}</mat-card-title>
+            <mat-card-title>{{userDetail.username}}</mat-card-title>
             <!-- <mat-card-subtitle class="m-2"></mat-card-subtitle> -->
         </mat-card-header>
 
-        <mat-card-content class="m-2">
-            User No: {{userDetail.userNo}}
+        <mat-card-content>
+            <p class="m-2 p-1">User No: {{userDetail.userNo}}</p>
+            <p class="m-2 p-1">Role: {{userDetail.roleName}}</p>
+            <p class="m-2 p-1">Registration Date: {{userDetail.registerDate | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
         </mat-card-content>
 
-        <mat-card-content class="m-2">
-            Role: {{userDetail.roleName}}
-        </mat-card-content>
-
-        <mat-card-content class="m-2">
-            Registration Date: {{userDetail.registerDate | date: 'yyyy-MM-dd HH:mm:ss'}}
-        </mat-card-content>
-
-        <mat-card-actions class="m-2">
+        <mat-card-actions class="m-1">
             <button mat-button (click)="navToChangePassword()">Change Password</button>
         </mat-card-actions>
     </mat-card>
