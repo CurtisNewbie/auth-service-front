@@ -48,6 +48,7 @@ import { ManageResourcesComponent } from './manage-resources/manage-resources.co
 import { ManagePathsComponent } from './manage-paths/manage-paths.component';
 import { MngResDialogComponent } from './mng-res-dialog/mng-res-dialog.component';
 import { MngPathDialogComponent } from './mng-path-dialog/mng-path-dialog.component';
+import { MngRoleDialogComponent } from './mng-role-dialog/mng-role-dialog.component';
 
 @NgModule({
   exports: [],
@@ -72,7 +73,8 @@ import { MngPathDialogComponent } from './mng-path-dialog/mng-path-dialog.compon
     ManageResourcesComponent,
     ManagePathsComponent,
     MngResDialogComponent,
-    MngPathDialogComponent
+    MngPathDialogComponent,
+    MngRoleDialogComponent
   ],
   imports: [
     MatCardModule,

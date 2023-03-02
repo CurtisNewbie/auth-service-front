@@ -24,7 +24,7 @@ export interface WRes {
 })
 export class ManageResourcesComponent implements OnInit {
   newResDialog = false;
-  newResName = "";
+  newResName = null;
 
   expandedElement: WRes = null;
   pagingController: PagingController;
@@ -40,6 +40,8 @@ export class ManageResourcesComponent implements OnInit {
 
   reset() {
     this.expandedElement = null;
+    this.newResDialog = false;
+    this.newResName = null;
     this.pagingController.firstPage();
   }
 
