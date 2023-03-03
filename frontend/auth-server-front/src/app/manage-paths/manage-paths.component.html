@@ -56,6 +56,11 @@
             <td mat-cell *matCellDef="let u"> {{u.url}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="desc">
+            <th mat-header-cell *matHeaderCellDef> Description </th>
+            <td mat-cell *matCellDef="let u"> {{u.desc}} </td>
+        </ng-container>
+
         <ng-container matColumnDef="ptype">
             <th mat-header-cell *matHeaderCellDef> Type </th>
             <td mat-cell *matCellDef="let u"> {{u.ptypeName}}
@@ -77,16 +82,6 @@
         <ng-container matColumnDef="createTime">
             <th mat-header-cell *matHeaderCellDef> Create Time </th>
             <td mat-cell *matCellDef="let u"> {{u.createTime | date: 'yyyy-MM-dd HH:mm:ss'}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="updateBy">
-            <th mat-header-cell *matHeaderCellDef> Update By </th>
-            <td mat-cell *matCellDef="let u"> {{u.createBy}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="updateTime">
-            <th mat-header-cell *matHeaderCellDef> Update Time </th>
-            <td mat-cell *matCellDef="let u"> {{u.updateTime | date: 'yyyy-MM-dd HH:mm:ss'}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="tabcol"></tr>

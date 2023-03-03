@@ -1,18 +1,14 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
+import { WPath } from '../manage-paths/manage-paths.component';
 import { MngResDialogComponent } from '../mng-res-dialog/mng-res-dialog.component';
 import { NotificationService } from '../notification.service';
 import { ResBrief, UserService } from '../user.service';
 import { HClient } from '../util/api-util';
 
 export interface DialogDat {
-  url: string,
-  pathNo: string,
-  resName: string,
-  resNo: string,
-  ptype: string
-  group: string
+  path: WPath;
 }
 
 @Component({
@@ -42,9 +38,9 @@ export class MngPathDialogComponent implements OnInit {
 
   update() {
     this.hclient.post(environment.goauthPath, "/path/update", {
-      type: this.dat.ptype,
-      pathNo: this.dat.pathNo,
-      group: this.dat.group
+      type: this.dat.path.ptype,
+      pathNo: this.dat.path.pathNo,
+      group: this.dat.path.pgroup
     }).subscribe({
       complete: () => {
         this.dialogRef.close();
@@ -54,7 +50,7 @@ export class MngPathDialogComponent implements OnInit {
 
   unbind() {
     this.hclient.post(environment.goauthPath, "/path/resource/unbind", {
-      pathNo: this.dat.pathNo,
+      pathNo: this.dat.path.pathNo,
     }).subscribe({
       complete: () => {
         this.dialogRef.close();
@@ -69,7 +65,7 @@ export class MngPathDialogComponent implements OnInit {
     }
 
     this.hclient.post(environment.goauthPath, "/path/resource/bind", {
-      pathNo: this.dat.pathNo,
+      pathNo: this.dat.path.pathNo,
       resNo: this.bindToResNo
     }).subscribe({
       complete: () => {

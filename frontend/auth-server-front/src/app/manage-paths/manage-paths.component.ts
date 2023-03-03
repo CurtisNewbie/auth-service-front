@@ -9,17 +9,18 @@ import { HClient } from '../util/api-util';
 import { isEnterKey } from '../util/condition';
 
 export interface WPath {
-  id?: number
-  pgroup?: string
-  pathNo?: string
-  resName?: string
-  resNo?: string
-  url?: string
-  ptype?: string
-  createTime?: Date
-  createBy?: string
-  updateTime?: Date
-  updateBy?: string
+  id?: number;
+  pgroup?: string;
+  pathNo?: string;
+  resName?: string;
+  resNo?: string;
+  desc?: string;
+  url?: string;
+  ptype?: string;
+  createTime?: Date;
+  createBy?: string;
+  updateTime?: Date;
+  updateBy?: string;
 }
 
 
@@ -41,7 +42,7 @@ export class ManagePathsComponent implements OnInit {
   expandedElement: WPath = null;
   pagingController: PagingController;
 
-  readonly tabcol = ["id", "pgroup", "url", "ptype", "resName", "createBy", "createTime", "updateBy", "updateTime"];
+  readonly tabcol = ["id", "pgroup", "url", "ptype", "desc", "resName", "createBy", "createTime"];
   paths: WPath[] = [];
 
   idEquals = isIdEqual;
@@ -70,12 +71,7 @@ export class ManagePathsComponent implements OnInit {
     this.dialog.open(MngPathDialogComponent, {
       width: "700px",
       data: {
-        url: p.url,
-        pathNo: p.pathNo,
-        resName: p.resName,
-        resNo: p.resNo,
-        ptype: p.ptype,
-        group: p.pgroup
+        path: { ...p }
       },
     }).afterClosed().subscribe({
       complete: () => {
