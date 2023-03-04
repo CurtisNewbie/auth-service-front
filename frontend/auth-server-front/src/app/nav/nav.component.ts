@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { UserInfo } from "src/models/user-info";
+import { UserInfo } from "src/common/user-info";
 import { UserService } from "../user.service";
 
 @Component({
@@ -13,8 +13,11 @@ export class NavComponent implements OnInit {
 
   constructor(private userService: UserService) {}
 
+  hasRes(code) {
+    return this.userService.hasResource(code);
+  }
+
   ngOnInit(): void {
-    this.userService.fetchUserInfo();
     this.userService.userInfoObservable.subscribe({
       next: (user) => {
         this.isAdmin = user.role === "admin";
@@ -29,6 +32,8 @@ export class NavComponent implements OnInit {
         }
       },
     });
+    this.userService.fetchUserInfo();
+    this.userService.fetchUserResources();
   }
 
   /** log out current user and navigate back to login page */

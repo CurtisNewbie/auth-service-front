@@ -2,11 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import {
   ChangePasswordParam,
   emptyChangePasswordParam,
-} from "src/models/user-info";
+} from "src/common/user-info";
 import { NavigationService, NavType } from "../navigation.service";
 import { NotificationService } from "../notification.service";
 import { UserService } from "../user.service";
-import { hasText } from "../util/str-util";
+import { hasText } from "../../common/str-util";
 
 @Component({
   selector: "app-change-password",

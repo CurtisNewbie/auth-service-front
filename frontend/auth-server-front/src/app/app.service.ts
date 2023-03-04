@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Paging } from "src/models/paging";
-import { Resp } from "src/models/resp";
-import { HClient } from "./util/api-util";
+import { Paging } from "src/common/paging";
+import { Resp } from "src/common/resp";
+import { HClient } from "../common/api-util";
 
 export interface ListAllAppReqVo {
   pagingVo: Paging;

@@ -2,10 +2,10 @@ import { ListRange } from '@angular/cdk/collections';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
-import { PagingController } from 'src/models/paging';
+import { PagingController } from 'src/common/paging';
 import { NotificationService } from '../notification.service';
 import { ResBrief, UserService } from '../user.service';
-import { HClient } from '../util/api-util';
+import { HClient } from '../../common/api-util';
 
 export interface DialogDat {
   roleNo: string
@@ -13,7 +13,7 @@ export interface DialogDat {
 
 export interface ListedRoleRes {
   id?: number
-  resNo?: string
+  resCode?: string
   resName?: string
   createTime?: Date
   createBy?: string
@@ -26,16 +26,15 @@ export interface ListedRoleRes {
 })
 export class MngRoleDialogComponent implements OnInit {
 
-  readonly tabcol = ['id', 'resNo', 'resName', 'createTime', 'createBy', 'operation'];
+  readonly tabcol = ['id', 'resCode', 'resName', 'createTime', 'createBy', 'operation'];
   pagingController: PagingController = null;
   roleRes: ListedRoleRes[] = [];
   resBriefs: ResBrief[] = [];
-  addResNo: string = null;
+  addResCode: string = null;
 
   constructor(
     public dialogRef: MatDialogRef<MngRoleDialogComponent, DialogDat>, @Inject(MAT_DIALOG_DATA) public dat: DialogDat,
     private hclient: HClient,
-    private userService: UserService,
     private toaster: NotificationService,
   ) { }
 
@@ -48,23 +47,22 @@ export class MngRoleDialogComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.resBriefs = res.data;
-          this.resBriefs.sort((a, b) => a.name.localeCompare(b.name));
         }
       })
   }
 
   addResource() {
-    if (!this.addResNo) {
+    if (!this.addResCode) {
       this.toaster.toast("Please select resource to add")
       return;
     }
 
     this.hclient.post<any>(environment.goauthPath, "/role/resource/add", {
       roleNo: this.dat.roleNo,
-      resNo: this.addResNo
+      resCode: this.addResCode
     }).subscribe({
       next: res => {
-        this.addResNo = null;
+        this.addResCode = null;
         this.listResources();
         this.fetchResourceCandidates();
       }
@@ -98,7 +96,7 @@ export class MngRoleDialogComponent implements OnInit {
   delRes(roleRes: ListedRoleRes) {
     this.hclient.post<any>(environment.goauthPath, "/role/resource/remove", {
       roleNo: this.dat.roleNo,
-      resNo: roleRes.resNo
+      resCode: roleRes.resCode
     }).subscribe({
       next: (res) => {
         this.listResources();

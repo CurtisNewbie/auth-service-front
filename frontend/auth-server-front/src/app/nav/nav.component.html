@@ -3,21 +3,15 @@
     <button mat-button [matMenuTriggerFor]="menu">menu</button>
     <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="/user-details" routerLinkActive="active">User Details</button>
-        <!-- TODO change to resource based ngIf -->
-        <!-- <ng-container *ngIf="isAdmin"> -->
-        <!-- </ng-container> -->
-
-        <button mat-menu-item routerLink="/manage-user" routerLinkActive="active">Manager Users</button>
-        <button mat-menu-item routerLink="/manage-roles" routerLinkActive="active">Manage Roles</button>
-        <button mat-menu-item routerLink="/manage-paths" routerLinkActive="active">Manage Paths</button>
-        <button mat-menu-item routerLink="/manage-resources" routerLinkActive="active">Manage Resources</button>
-        <button mat-menu-item routerLink="/access-log" routerLinkActive="active">Access History</button>
-        <button mat-menu-item routerLink="/operate-history" routerLinkActive="active">Operate History</button>
-        <button mat-menu-item routerLink="/manage-task" routerLinkActive="active">Manage Tasks</button>
-        <button mat-menu-item routerLink="/task-history" routerLinkActive="active">Task History</button>
-        <ng-container>
-            <button mat-menu-item routerLink="/manage-keys" routerLinkActive="active">Manage Keys</button>
-        </ng-container>
+        <button mat-menu-item routerLink="/manage-user" routerLinkActive="active" *ngIf="hasRes('manage-users')">Manage Users</button>
+        <button mat-menu-item routerLink="/manage-roles" routerLinkActive="active" *ngIf="hasRes('manage-roles')">Manage Roles</button>
+        <button mat-menu-item routerLink="/manage-paths" routerLinkActive="active" *ngIf="hasRes('manage-paths')">Manage Paths</button>
+        <button mat-menu-item routerLink="/manage-resources" routerLinkActive="active" *ngIf="hasRes('manage-resources')">Manage Resources</button>
+        <button mat-menu-item routerLink="/access-log" routerLinkActive="active" *ngIf="hasRes('access-logs')">Access History</button>
+        <button mat-menu-item routerLink="/operate-history" routerLinkActive="active" *ngIf="hasRes('operate-logs')">Operate History</button>
+        <button mat-menu-item routerLink="/manage-task" routerLinkActive="active" *ngIf="hasRes('manage-tasks')">Manage Tasks</button>
+        <button mat-menu-item routerLink="/task-history" routerLinkActive="active" *ngIf="hasRes('manage-tasks')">Task History</button>
+        <button mat-menu-item routerLink="/manage-keys" routerLinkActive="active">Manage Keys</button>
     </mat-menu>
 
     <button mat-button [matMenuTriggerFor]="userMenu">{{userInfo.username}}</button>

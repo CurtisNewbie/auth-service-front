@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { Resp } from "src/models/resp";
+import { Resp } from "./resp";
 
 const TOKEN = "token";
 let emptyTokenCallback = null;

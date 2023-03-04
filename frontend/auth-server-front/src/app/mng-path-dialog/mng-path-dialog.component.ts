@@ -5,7 +5,7 @@ import { WPath } from '../manage-paths/manage-paths.component';
 import { MngResDialogComponent } from '../mng-res-dialog/mng-res-dialog.component';
 import { NotificationService } from '../notification.service';
 import { ResBrief, UserService } from '../user.service';
-import { HClient } from '../util/api-util';
+import { HClient } from '../../common/api-util';
 
 export interface DialogDat {
   path: WPath;
@@ -19,7 +19,7 @@ export interface DialogDat {
 export class MngPathDialogComponent implements OnInit {
 
   resBrief: ResBrief[] = [];
-  bindToResNo = "";
+  bindToResCode = "";
   PATH_TYPES = [
     { val: 'PROTECTED', name: 'Protected' },
     { val: 'PUBLIC', name: "Public" }
@@ -59,14 +59,14 @@ export class MngPathDialogComponent implements OnInit {
   }
 
   bind() {
-    if (!this.bindToResNo) {
+    if (!this.bindToResCode) {
       this.toaster.toast("Please select resource");
       return;
     }
 
     this.hclient.post(environment.goauthPath, "/path/resource/bind", {
       pathNo: this.dat.path.pathNo,
-      resNo: this.bindToResNo
+      resCode: this.bindToResCode
     }).subscribe({
       complete: () => {
         this.dialogRef.close();
@@ -75,7 +75,7 @@ export class MngPathDialogComponent implements OnInit {
   }
 
   _fetchRoleBriefs(): void {
-    this.userService.fetchResBrief().subscribe({
+    this.userService.fetchAllResBrief().subscribe({
       next: (dat) => {
         this.resBrief = [];
         if (dat.data) {

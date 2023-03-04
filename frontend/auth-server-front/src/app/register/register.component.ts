@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { NavigationService, NavType } from "../navigation.service";
 import { NotificationService } from "../notification.service";
 import { UserService } from "../user.service";
-import { isEnterKey } from "../util/condition";
+import { isEnterKey } from "../../common/condition";
 
 @Component({
   selector: "app-register",

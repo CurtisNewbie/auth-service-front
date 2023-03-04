@@ -8,7 +8,7 @@ import {
 } from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { Resp } from "src/models/resp";
+import { Resp } from "src/common/resp";
 import { UserService } from "../user.service";
 import { NotificationService } from "../notification.service";
 

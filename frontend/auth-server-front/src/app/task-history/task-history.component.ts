@@ -1,10 +1,10 @@
 import { formatDate } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { PagingController } from "src/models/paging";
-import { TaskHistory } from "src/models/task";
+import { PagingController } from "src/common/paging";
+import { TaskHistory } from "src/common/task";
 import { TaskService } from "../task.service";
-import { isEnterKey } from "../util/condition";
+import { isEnterKey } from "../../common/condition";
 
 export interface TaskHistoryData {
   taskId: number;

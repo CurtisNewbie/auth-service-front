@@ -9,7 +9,6 @@ import { ManagerUserComponent } from "./manager-user/manager-user.component";
 import { OperateHistoryComponent } from "./operate-history/operate-history.component";
 import { RegisterComponent } from "./register/register.component";
 import { TaskHistoryComponent } from "./task-history/task-history.component";
-import { UserAppComponent } from "./user-app/user-app.component";
 import { UserDetailComponent } from "./user-detail/user-detail.component";
 import { ManageRoleComponent } from "./manage-role/manage-role.component";
 import { ManagePathsComponent } from "./manage-paths/manage-paths.component";

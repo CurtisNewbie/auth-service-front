@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { getExpanded, isIdEqual } from 'src/animate/animate-util';
 import { environment } from 'src/environments/environment';
-import { PagingController } from 'src/models/paging';
+import { PagingController } from 'src/common/paging';
 import { NotificationService } from '../notification.service';
 import { UserService } from '../user.service';
-import { HClient } from '../util/api-util';
-import { isEnterKey } from '../util/condition';
+import { HClient } from '../../common/api-util';
+import { isEnterKey } from '../../common/condition';
+import { MngResDialogComponent } from '../mng-res-dialog/mng-res-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface WRes {
-  id?: number
-  resNo?: string
-  name?: string
-  createTime?: Date
-  createBy?: string
-  updateTime?: Date
-  updateBy?: string
+  id?: number;
+  code?: string;
+  name?: string;
+  createTime?: Date;
+  createBy?: string;
+  updateTime?: Date;
+  updateBy?: string;
 }
 
 @Component({
@@ -25,27 +27,35 @@ export interface WRes {
 export class ManageResourcesComponent implements OnInit {
   newResDialog = false;
   newResName = null;
+  newResCode = null;
 
   expandedElement: WRes = null;
   pagingController: PagingController;
 
-  readonly tabcol = ["id", "resNo", "name", "createBy", "createTime", "updateBy", "updateTime"];
+  readonly tabcol = ["id", "name", "code", "createBy", "createTime", "updateBy", "updateTime"];
   resources: WRes[] = [];
 
   idEquals = isIdEqual;
   getExpandedEle = (row) => getExpanded(row, this.expandedElement);
   isEnter = isEnterKey;
 
-  constructor(private hclient: HClient, private userService: UserService, private toaster: NotificationService) { }
+  constructor(
+    private hclient: HClient,
+    private userService: UserService,
+    private toaster: NotificationService,
+    private dialog: MatDialog,
+  ) { }
 
   reset() {
     this.expandedElement = null;
     this.newResDialog = false;
     this.newResName = null;
+    this.newResCode = null;
     this.pagingController.firstPage();
   }
 
   ngOnInit(): void {
+    this.userService.fetchUserResources();
     this.userService.fetchUserInfo();
   }
 
@@ -78,16 +88,34 @@ export class ManageResourcesComponent implements OnInit {
       this.toaster.toast("Please enter new resource name");
       return;
     }
+    if (!this.newResCode) {
+      this.toaster.toast("Please enter new resource code");
+      return;
+    }
 
     this.hclient.post(environment.goauthPath, "/resource/add", {
-      name: this.newResName
+      name: this.newResName,
+      code: this.newResCode
     }).subscribe({
       next: (r) => {
         this.newResDialog = false;
-        this.newResName = "";
+        this.newResName = null;
+        this.newResCode = null;
         this.fetchList();
       }
     });
   }
 
+  openMngResDialog(r: WRes) {
+    this.dialog.open(MngResDialogComponent, {
+      width: "700px",
+      data: {
+        res: { ...r }
+      },
+    }).afterClosed().subscribe({
+      complete: () => {
+        this.fetchList();
+      }
+    });
+  }
 }

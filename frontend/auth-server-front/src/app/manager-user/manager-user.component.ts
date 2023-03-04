@@ -1,20 +1,19 @@
-import { Component, OnInit, ViewChild } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { animateElementExpanding, getExpanded, isIdEqual } from "src/animate/animate-util";
 import { environment } from "src/environments/environment";
-import { PagingController } from "src/models/paging";
+import { PagingController } from "src/common/paging";
 import {
   FetchUserInfoParam,
   UserInfo,
   UserIsDisabledEnum,
   USER_IS_DISABLED_OPTIONS,
-} from "src/models/user-info";
+} from "src/common/user-info";
 import { ConfirmDialogComponent } from "../dialog/confirm/confirm-dialog.component";
 import { NotificationService } from "../notification.service";
-import { UserPermittedAppUpdateComponent } from "../user-permitted-app-update/user-permitted-app-update.component";
 import { RoleBrief, UserService } from "../user.service";
-import { HClient } from "../util/api-util";
-import { isEnterKey } from "../util/condition";
+import { HClient } from "../../common/api-util";
+import { isEnterKey } from "../../common/condition";
 
 @Component({
   selector: "app-manager-user",
@@ -151,6 +150,7 @@ export class ManagerUserComponent implements OnInit {
       this.dialog.open(ConfirmDialogComponent, {
         width: "500px",
         data: {
+          title: "Delete User",
           msg: [
             `You sure you want to delete user '${this.expandedElement.username}'`,
           ],

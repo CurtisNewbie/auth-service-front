@@ -1,10 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { PageEvent } from "@angular/material/paginator";
 import { environment } from "src/environments/environment";
-import { FetchOperateLogListResp, OperateLog } from "src/models/operate-log";
-import { PagingController } from "src/models/paging";
+import { OperateLog } from "src/common/operate-log";
+import { PagingController } from "src/common/paging";
 import { UserService } from "../user.service";
-import { HClient } from "../util/api-util";
+import { HClient } from "../../common/api-util";
 
 @Component({
   selector: "app-operate-history",
@@ -40,10 +39,10 @@ export class OperateHistoryComponent implements OnInit {
       next: (resp) => {
         this.operateLogList = [];
         if (resp.data.operateLogVoList) {
-            for (let r of resp.data.operateLogVoList) {
-                if (r.operateTime) r.operateTime = new Date(r.operateTime);
-                this.operateLogList.push(r);
-            }
+          for (let r of resp.data.operateLogVoList) {
+            if (r.operateTime) r.operateTime = new Date(r.operateTime);
+            this.operateLogList.push(r);
+          }
         }
         this.pagingController.onTotalChanged(resp.data.pagingVo);
       },

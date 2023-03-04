@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { NavigationService, NavType } from "../navigation.service";
 import { NotificationService } from "../notification.service";
 import { UserService } from "../user.service";
-import { setToken } from "../util/api-util";
-import { isEnterKey } from "../util/condition";
+import { setToken } from "../../common/api-util";
+import { isEnterKey } from "../../common/condition";
 
 @Component({
   selector: "app-login",
@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
     this.userService.login(this.usernameInput, this.passwordInput).subscribe({
       next: (resp) => {
         setToken(resp.data);
+        this.userService.fetchUserResources();
         this.nav.navigateTo(NavType.USER_DETAILS);
       },
       complete: () => {

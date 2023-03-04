@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { PagingController } from "src/models/paging";
+import { PagingController } from "src/common/paging";
 import {
   emptyListTaskByPageReqVo,
   ListTaskByPageReqVo,
@@ -9,13 +9,13 @@ import {
   TASK_CONCURRENT_ENABLED_OPTIONS,
   TASK_ENABLED_OPTIONS,
   UpdateTaskReqVo,
-} from "src/models/task";
+} from "src/common/task";
 import { animateElementExpanding, getExpanded, isIdEqual } from "../../animate/animate-util";
-import { Option } from "src/models/select-util";
+import { Option } from "src/common/select-util";
 import { NotificationService } from "../notification.service";
 import { TaskService } from "../task.service";
 import { NavigationService, NavType } from "../navigation.service";
-import { isEnterKey } from "../util/condition";
+import { isEnterKey } from "../../common/condition";
 
 @Component({
   selector: "app-manage-tasks",

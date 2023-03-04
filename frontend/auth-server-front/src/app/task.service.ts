@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Resp } from "src/models/resp";
+import { Resp } from "src/common/resp";
 import {
   ListTaskByPageReqVo,
   ListTaskByPageRespVo,
@@ -9,8 +9,8 @@ import {
   ListTaskHistoryRespVo,
   TriggerTaskReqVo,
   UpdateTaskReqVo,
-} from "src/models/task";
-import { HClient } from "./util/api-util";
+} from "src/common/task";
+import { HClient } from "../common/api-util";
 
 @Injectable({
   providedIn: "root",

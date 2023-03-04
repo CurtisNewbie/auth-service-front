@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { PagingController } from 'src/models/paging';
+import { PagingController } from 'src/common/paging';
 
 @Component({
   selector: 'app-controlled-paginator',

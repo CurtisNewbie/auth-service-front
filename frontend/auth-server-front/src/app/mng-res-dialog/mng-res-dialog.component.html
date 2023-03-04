@@ -1,7 +1,14 @@
-<h5>Resource '{{dat.resource}}'</h5>
+<h1 mat-dialog-title>Resource '{{dat.res.name}}'</h1>
 
-<div class="d-flex justify-content-end">
-    <button mat-raised-button class="m-2" (click)="updateResource()">Update</button>
-    <button mat-raised-button class="m-2" mat-dialog-close>Close</button>
+<div mat-dialog-content>
+    <p>Id: {{dat.res.id}}</p>
+    <p>Name: {{dat.res.name}}</p>
+    <p>Resource Code: {{dat.res.code}}</p>
+    <p>Create By: {{dat.res.createBy}}</p>
+    <p>Create Time: {{dat.res.createTime | date: 'yyyy-MM-dd HH:mm:ss'}}</p>
 </div>
 
+<div class="d-flex justify-content-end">
+    <button mat-raised-button class="m-2" (click)="removeResource()">Remove</button>
+    <button mat-raised-button class="m-2" mat-dialog-close>Close</button>
+</div>

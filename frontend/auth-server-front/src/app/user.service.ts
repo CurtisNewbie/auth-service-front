@@ -1,9 +1,9 @@
-import { Injectable, OnDestroy } from "@angular/core";
+import { Injectable, OnDestroy, OnInit } from "@angular/core";
 import { Observable, Subject, Subscription } from "rxjs";
 import {
   ChangePasswordParam,
   UserInfo,
-} from "src/models/user-info";
+} from "src/common/user-info";
 import { NavigationService, NavType } from "./navigation.service";
 import { NotificationService } from "./notification.service";
 import {
@@ -11,19 +11,20 @@ import {
   getToken,
   onEmptyToken,
   HClient,
-} from "./util/api-util";
-import { Resp } from "src/models/resp";
+} from "../common/api-util";
+import { Resp } from "src/common/resp";
 import { timer } from "rxjs";
 import { environment } from "src/environments/environment";
 
 export interface RoleBrief {
-  roleNo?: string
-  name?: string
+  roleNo?: string;
+  name?: string;
+  code?: string;
 }
 
 export interface ResBrief {
-  resNo?: string
-  name?: string
+  code?: string;
+  name?: string;
 }
 
 @Injectable({
@@ -31,9 +32,9 @@ export interface ResBrief {
 })
 export class UserService implements OnDestroy {
 
-  private roleSubject = new Subject<string>();
   private isLoggedInSubject = new Subject<boolean>();
   private userInfoSubject = new Subject<UserInfo>();
+  private resources: Set<string> = null;
 
   private tokenRefresher: Subscription = timer(60_000, 360_000).subscribe(
     () => {
@@ -49,11 +50,8 @@ export class UserService implements OnDestroy {
     }
   );
 
-  userInfoObservable: Observable<UserInfo> =
-    this.userInfoSubject.asObservable();
-  roleObservable: Observable<string> = this.roleSubject.asObservable();
-  isLoggedInObservable: Observable<boolean> =
-    this.isLoggedInSubject.asObservable();
+  userInfoObservable: Observable<UserInfo> = this.userInfoSubject.asObservable();
+  isLoggedInObservable: Observable<boolean> = this.isLoggedInSubject.asObservable();
 
   constructor(
     private http: HClient,
@@ -65,6 +63,11 @@ export class UserService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.tokenRefresher.unsubscribe();
+  }
+
+  hasResource(code): boolean {
+    if (this.resources == null) return false;
+    return this.resources.has(code);
   }
 
   /**
@@ -109,8 +112,21 @@ export class UserService implements OnDestroy {
     return this.http.get<any>(environment.goauthPath, "/role/brief/all");
   }
 
-  public fetchResBrief(): Observable<Resp<any>> {
+  public fetchAllResBrief(): Observable<Resp<any>> {
     return this.http.get<any>(environment.goauthPath, "/resource/brief/all");
+  }
+
+  public fetchUserResources() {
+    this.http.get<any>(environment.goauthPath, "/resource/brief/user").subscribe({
+      next: (res) => {
+        this.resources = new Set();
+        if (res.data) {
+          for (let r of res.data) {
+            this.resources.add(r.code);
+          }
+        }
+      }
+    })
   }
 
   /**
@@ -135,19 +151,12 @@ export class UserService implements OnDestroy {
   }
 
   private onUserInfoFetched(userInfo: UserInfo): void {
-    console.log('Fetched UserInfo:', userInfo);
-    this._notifyRole(userInfo.role);
     this._notifyLoginStatus(true);
     this._notifyUserInfo(userInfo);
   }
 
   private _notifyUserInfo(userInfo: UserInfo): void {
     this.userInfoSubject.next(userInfo);
-  }
-
-  /** Notify the role of the user via observable */
-  private _notifyRole(role: string): void {
-    this.roleSubject.next(role);
   }
 
   /** Notify the login status of the user via observable */

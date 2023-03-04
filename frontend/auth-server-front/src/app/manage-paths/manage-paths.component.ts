@@ -2,18 +2,18 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { getExpanded, isIdEqual } from 'src/animate/animate-util';
 import { environment } from 'src/environments/environment';
-import { PagingController } from 'src/models/paging';
+import { PagingController } from 'src/common/paging';
 import { MngPathDialogComponent } from '../mng-path-dialog/mng-path-dialog.component';
 import { UserService } from '../user.service';
-import { HClient } from '../util/api-util';
-import { isEnterKey } from '../util/condition';
+import { HClient } from '../../common/api-util';
+import { isEnterKey } from '../../common/condition';
 
 export interface WPath {
   id?: number;
   pgroup?: string;
   pathNo?: string;
   resName?: string;
-  resNo?: string;
+  resCode?: string;
   desc?: string;
   url?: string;
   ptype?: string;
