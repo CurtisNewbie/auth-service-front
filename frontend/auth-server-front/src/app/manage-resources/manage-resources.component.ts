@@ -108,7 +108,7 @@ export class ManageResourcesComponent implements OnInit {
 
   openMngResDialog(r: WRes) {
     this.dialog.open(MngResDialogComponent, {
-      width: "700px",
+      width: "1000px",
       data: {
         res: { ...r }
       },
