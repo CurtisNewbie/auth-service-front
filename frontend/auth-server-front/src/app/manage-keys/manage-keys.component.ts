@@ -35,6 +35,7 @@ export class ManageKeysComponent implements OnInit {
   idEquals = isIdEqual;
   getExpandedEle = (row) => getExpanded(row, this.expandedElement);
   isEnter = isEnterKey;
+  mask = (k: string) => k.length > 0 ? k.substring(0, 5) + "*********" + k.substring(k.length - 5) : "";
 
   constructor(
     private http: HClient,

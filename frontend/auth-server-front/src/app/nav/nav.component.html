@@ -11,7 +11,7 @@
         <button mat-menu-item routerLink="/operate-history" routerLinkActive="active" *ngIf="hasRes('operate-logs')">Operate History</button>
         <button mat-menu-item routerLink="/manage-task" routerLinkActive="active" *ngIf="hasRes('manage-tasks')">Manage Tasks</button>
         <button mat-menu-item routerLink="/task-history" routerLinkActive="active" *ngIf="hasRes('manage-tasks')">Task History</button>
-        <button mat-menu-item routerLink="/manage-keys" routerLinkActive="active">Manage Keys</button>
+        <button mat-menu-item routerLink="/manage-keys" routerLinkActive="active" *ngIf="hasRes('basic-user')">Manage Keys</button>
     </mat-menu>
 
     <button mat-button [matMenuTriggerFor]="userMenu">{{userInfo.username}}</button>
