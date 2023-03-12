@@ -54,7 +54,7 @@ export class MngResDialogComponent implements OnInit {
 
   }
 
-  removeResource() {
+  deleteResource() {
     const dialogRef: MatDialogRef<ConfirmDialogComponent, boolean> =
       this.dialog.open(ConfirmDialogComponent, {
         width: "500px",
