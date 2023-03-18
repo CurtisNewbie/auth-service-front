@@ -4,8 +4,8 @@
     <mat-menu #menu="matMenu">
         <button mat-menu-item routerLink="/user-details" routerLinkActive="active">User Details</button>
         <button mat-menu-item routerLink="/manage-user" routerLinkActive="active" *ngIf="hasRes('manage-users')">Manage Users</button>
-        <button mat-menu-item routerLink="/manage-roles" routerLinkActive="active" *ngIf="hasRes('manage-roles')">Manage Roles</button>
-        <button mat-menu-item routerLink="/manage-paths" routerLinkActive="active" *ngIf="hasRes('manage-paths')">Manage Paths</button>
+        <button mat-menu-item routerLink="/manage-roles" routerLinkActive="active" *ngIf="hasRes('manage-resources')">Manage Roles</button>
+        <button mat-menu-item routerLink="/manage-paths" routerLinkActive="active" *ngIf="hasRes('manage-resources')">Manage Paths</button>
         <button mat-menu-item routerLink="/manage-resources" routerLinkActive="active" *ngIf="hasRes('manage-resources')">Manage Resources</button>
         <button mat-menu-item routerLink="/access-log" routerLinkActive="active" *ngIf="hasRes('access-logs')">Access History</button>
         <button mat-menu-item routerLink="/operate-history" routerLinkActive="active" *ngIf="hasRes('operate-logs')">Operate History</button>

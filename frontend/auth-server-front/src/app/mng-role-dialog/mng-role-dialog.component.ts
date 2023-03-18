@@ -88,7 +88,7 @@ export class MngRoleDialogComponent implements OnInit {
   }
 
   onPagingControllerReady(pc) {
-    this.pagingController = pc;
+    this.pagingController = pc; 
     this.pagingController.onPageChanged = () => this.listResources();
     this.listResources();
   }

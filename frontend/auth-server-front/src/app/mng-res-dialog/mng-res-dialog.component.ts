@@ -82,6 +82,8 @@ export class MngResDialogComponent implements OnInit {
 
   onPagingControllerReady(pc) {
     this.pagingController = pc;
+    this.pagingController.PAGE_LIMIT_OPTIONS = [5];
+    this.pagingController.paging.limit = 5;
     this.pagingController.onPageChanged = () => this.listPathsBound();
     this.listPathsBound();
   }
